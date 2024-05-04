@@ -1,0 +1,213 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<label for="create_task" class="header">Create task</label>
+<form id="create_task">
+    <label class="header_label" for="name">Name</label><br>
+    <input id="name" name="name" style="width: 300px; line-height: 1.7; height: 35px; border: 1px solid  " type="text"
+        required><br>
+
+    <label class="header_label" for="comment">Comment</label><br>
+    <input id="comment" name="comment" style="width: 300px; line-height: 1.7; height: 35px; border: 1px solid  "
+        type="text"><br>
+
+    <label class="header_label" for="comment">Target</label><br>
+    <select id="target_id" name="target_id"
+        style="width: 300px; display:block; line-height: 1.7; height: 35px; border: 1px solid" selected required>
+        {% for child in targets%}
+        <option value="{{child.id}}">{{child.name}}</option>
+        {%endfor%}
+
+        <option value="target_1">target</option>
+    </select>
+
+    <label class="header_label" for="comment">Scanner</label><br>
+    <select id="scanner_id" name="scanner_id "
+        style="width: 300px; display:block; line-height: 1.7; height: 35px; border: 1px solid" selected required>
+
+        {% for child in scanners%}
+        <option value="{{child.id}}">{{child.name}}</option>
+        {%endfor%}
+
+    </select>
+
+    <label class="header_label" for="comment">Scan config</label><br>
+    <select id="config_id" name="config_id"
+        style="width: 300px; display:block; line-height: 1.7; height: 35px; border: 1px solid" selected required>
+
+        {% for child in scanner_lists%}
+        <option value="{{child.id}}">{{child.name}}</option>
+        {%endfor%}
+
+
+        <!-- <option value="config_1">config</option> -->
+    </select>
+
+</form>
+<div>
+    <button
+        style="margin-top: 5px; border-radius: 5px; background-color: rgb(187, 74, 138); color: white; border: none; padding: 5px;"
+        onclick="create_task()">
+        Create Task
+    </button>
+</div>
+
+<div style="margin-top: 15px">
+    <label for="create_task" class="header">Task List</label>
+</div>
+
+{% for child in tasks %}
+<div class="card" style="border: 1px solid white;">
+    <div class="card-body">
+
+        <div class="card-title" style="display:flex; color:wheat">
+            <span style="font-weight: bold; flex:2">Task ID</span>
+            <span style="font-weight: bold; flex:1">Name</span>
+            <span style="font-weight: bold; flex:1">Target</span>
+            <span style="font-weight: bold; flex:1">Comment</span>
+            <span style="font-weight: bold; flex:1">Scanner</span>
+            <span style="font-weight: bold; flex:1">Config</span>
+            <span style="font-weight: bold; flex:1">Status</span>
+            <span style="font-weight: bold; flex:1">Action</span>
+        </div>
+        <div style="display:flex; color:white ">
+            <span class="id" style="font-weight: bold; flex:2">{{child.id}}</span>
+            <span style="font-weight: bold; flex:1">{{child.name}}</span>
+            <span style="font-weight: bold; flex:1">{{child.target}}</span>
+            <span style="font-weight: bold; flex:1">{{child.comment}}</span>
+            <span style="font-weight: bold; flex:1">{{child.scanner}}</span>
+            <span style="font-weight: bold; flex:1">{{child.config}}</span>
+            <span class="status" style="font-weight: bold; flex:1">{{child.status}}</span>
+            <div style="flex:1">
+                {% if child.report != "None"%}
+                <a href="/gvm/report/{{ child.report}}">
+                    <button id="report_{{ child.report }}"
+                        style=" right: 80px; bottom: 10px; border-radius: 5px; background-color: rgb(14, 131, 160); color: white; border: none; padding: 5px;">
+                        Report
+                    </button>
+                </a>
+
+
+                {%endif%}
+
+                <button data-id="{{ child.id }}" data-name="{{ child.name }}" data-status="{{ child.status }}"
+                    onclick="scan()"
+                    style=" right: 10px; bottom: 10px; border-radius: 5px; background-color: rgb(17, 117, 50); color: white; border: none; padding: 5px;">
+
+                    Scan
+                </button>
+
+                <button data-id="{{ child.id }}" data-name="{{ child.name }}" onclick="delete_task()"
+                    style=" right: 80px; bottom: 10px; border-radius: 5px; background-color: rgb(189, 60, 28); color: white; border: none; padding: 5px;">
+                    Delete
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{%endfor%}
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    setInterval(function () {
+        autoLoad();
+    }, 10000);
+    function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    async function autoLoad() {
+
+        var divs = document.querySelectorAll('.status');
+        for (var i = 0; i < divs.length; i++) {
+            let status = divs[i];
+            // setTimeout(function () {
+            if (divs[i].textContent != "Done") fetch("/gvm/action_task/status/" + divs[i].parentElement.querySelector(".id").textContent).then(response => response.json())
+                .then(data => {
+                    status.textContent = data['status'];
+                });
+
+            await sleep(1000);
+        }
+    }
+
+    async function scan() {
+        const token = "{{ csrf_token }}";
+        const task_id = event.target.getAttribute('data-id')
+        const task_name = event.target.getAttribute('data-name')
+        const action_start = '/gvm/action_task/start/'
+        if (confirm('Scan ' + task_name + ' ?') == true) {
+            await fetch(action_start + task_id, {
+                method: 'GET',
+                headers: {
+                    'X-CSRFToken': token
+                }
+            })
+        }
+
+
+    }
+
+    async function delete_task() {
+        const token = "{{ csrf_token }}";
+        const task_id = event.target.getAttribute('data-id')
+        const task_name = event.target.getAttribute('data-name')
+        if (confirm('Delete ' + task_name + " ?")) {
+            const res = await fetch('/gvm/action_task/delete/' + task_id, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': token
+                }
+            })
+
+            if (res.status == 200) {
+                location.reload()
+            }
+        }
+
+
+
+    }
+
+    async function create_task() {
+        const token = "{{ csrf_token }}";
+        const name = document.getElementById("name").value;
+        const comment = document.getElementById("comment").value;
+        const target_id = document.getElementById("target_id").value;
+        const scanner_id = document.getElementById("scanner_id").value;
+        const config_id = document.getElementById("config_id").value;
+
+        const data = new FormData();
+        data.append('name', name);
+        data.append('comment', comment);
+        data.append('target_id', target_id);
+        data.append('scanner_id', scanner_id);
+        data.append('config_id', config_id);
+
+        const response = await fetch('/gvm/task/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': token
+            },
+            body: data
+        });
+
+        if (response.status == 200) {
+            document.getElementById("create_task").reset();
+            location.reload(true);
+        }
+
+
+
+    }
+
+</script>
+{% endblock javascripts %}

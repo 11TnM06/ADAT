@@ -1,0 +1,46 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content%}
+<h1>Metasploit Vulnerability Report</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">IP Address</th>
+            <th scope="col">OS Name</th>
+            <th scope="col">OS Family</th>
+            <th scope="col">Architecture</th>
+            <th scope="col">Vulnerabilities</th>
+            <th scope="col">References</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for host in reponse %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ host.address }}</td>
+            <td>{{ host.os_name }}</td>
+            <td>{{ host.os_family }}</td>
+            <td>{{ host.detected_arch }}</td>
+            <td>
+                <ul>
+                    {% for vuln in host.vulns %}
+                    <li>{{ vuln.name }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for vuln in host.vulns %}
+                    {% for ref in vuln.refs %}
+                    <li>{{ ref }}</li>
+                    {% endfor %}
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

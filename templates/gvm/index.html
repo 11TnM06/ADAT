@@ -1,0 +1,47 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+
+<label for="create_target" class="header">Tasks</label>
+
+<div>
+
+
+    {%for task in tasks_id%}
+
+    <div onclick="">
+
+        <div>{{task.name}}</div>
+
+        <div>{{task.id}}</div>
+    </div>
+
+
+    {%endfor%}
+
+    <div id="detail-task">
+
+    </div>
+
+    <div>
+        {{report}}
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    function getTaskDetail(id) {
+
+    }
+
+
+</script>
+{% endblock javascripts %}

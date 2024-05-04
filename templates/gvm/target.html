@@ -1,0 +1,139 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+
+<label for="create_target" class="header">Creat Target</label>
+<form id="create_target">
+    <label class="header_label" for="name">Name</label><br>
+    <input style="width: 300px; line-height: 1.7; height: 35px; border: 1px solid  " type="text" id="name" name="name"
+        required><br>
+
+
+
+    <label class="header_label" for="comment">Comment</label><br>
+    <input style="width: 300px; line-height: 1.7; height: 35px; border: 1px solid  " type="text" id="comment"
+        name="comment"><br>
+
+
+
+    <label class="header_label" for="hosts">Host</label><br>
+    <input style="width: 300px; line-height: 1.7; height: 35px; border: 1px solid  " type="text" id="hosts" name="hosts"
+        required><br>
+
+    <label class="header_label" for="port_lists">Ports</label><br>
+
+    <select id="port_lists" style="width: 300px; line-height: 1.7; height: 35px; border: 1px solid  " name="port_lists"
+        selected required>
+
+
+        {% for child in port_lists%}
+        <option value="{{child.id}}">{{child.name}}</option>
+        {%endfor%}
+
+    </select>
+</form>
+<div>
+    <button
+        style="margin-top: 15px; border-radius: 5px; background-color: rgb(187, 74, 138); color: white; border: none; padding: 5px;"
+        onclick="create_target()">
+        Create Target
+    </button>
+
+</div>
+
+
+<label for="create_target" class="header" style="padding-top: 30px;">Target List</label>
+
+
+{% for child in targets %}
+<div class="card" style="border: 1px solid white;">
+    <div class="card-body">
+
+        <div class="card-title" style="display:flex; color:wheat">
+            <span style="font-weight: bold; flex:2">ID</span>
+            <span style="font-weight: bold; flex:1">Name</span>
+            <span style="font-weight: bold; flex:1">Comment</span>
+            <span style="font-weight: bold; flex:1">Ports</span>
+            <span style="font-weight: bold; flex:1">Hosts</span>
+        </div>
+        <div style="display:flex; color:white ">
+            <span style="font-weight: bold; flex:2">{{child.id}}</span>
+            <span style="font-weight: bold; flex:1">{{child.name}}</span>
+            <span style="font-weight: bold; flex:1">{{child.comment}}</span>
+            <span style="font-weight: bold; flex:1">{{child.port_list}}</span>
+            <span style="font-weight: bold; flex:1">{{child.hosts}}</span>
+        </div>
+
+
+
+    </div>
+
+    <button id="{{ child.id }}" onclick="deleteTarget()"
+        style="position: absolute; right: 10px; bottom: 10px; border-radius: 5px; background-color: rgb(187, 74, 138); color: white; border: none; padding: 5px;"
+        {% if child.in_use is '1' %} disabled="disabled" class="disabled" {% endif %}>
+
+        Delete
+    </button>
+</div>
+{%endfor%}
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    async function deleteTarget() {
+        var token = "{{ csrf_token }}";
+        var target_id = event.target.id;
+        var url = '/gvm/target/' + target_id;
+        var response = await fetch(url, {
+
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': token
+            }
+        });
+
+        if (response.status == 200) {
+            document.getElementById("create_target").reset();
+            location.reload(true);
+
+        }
+    }
+
+    async function create_target() {
+        const token = "{{ csrf_token }}";
+        const name = document.getElementById("name").value;
+        const comment = document.getElementById("comment").value;
+        const hosts = document.getElementById("hosts").value;
+        const port_lists = document.getElementById("port_lists").value;
+
+        const data = new FormData();
+        data.append('name', name);
+        data.append('comment', comment);
+        data.append('hosts', hosts);
+        data.append('port_lists', port_lists);
+
+        const response = await fetch('/gvm/target/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': token
+            },
+            body: data
+        });
+
+        if (response.status == 200) {
+            document.getElementById("create_target").reset();
+            location.reload(true);
+        }
+
+
+
+    }
+
+</script>
+{% endblock javascripts %}

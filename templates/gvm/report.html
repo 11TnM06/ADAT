@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block content %}
+<label for="create_target" class="header">{{ task_name }} | {{counts}}</label>
+
+
+
+<div style="max-width: 100vw">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" style="width: 15%">Name</th>
+        <th scope="col" style="width: 5%">Threat</th>
+        <th scope="col" style="width: 5%">Severity</th>
+        <th scope="col" style="width: 5%">Host</th>
+        <th scope="col" style="width: 5%">Port</th>
+        <th scope="col" style="width: 55%">Description</th>
+        <th scope="col" style="width: 5%">Try to Metaploit</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for child in response %}
+
+      <tr>
+        <th scope="row"> {{ forloop.counter }} </th>
+        <td> {{ child.name }} </td>
+        <td> {{ child.threat }} </td>
+        <td> {{ child.severity }} </td>
+        <td> {{ child.host }} </td>
+        <td> {{ child.port }} </td>
+        <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"> {{ child.description }} </td>
+        <td>
+          <a target="_blank" href="/opra/auto/{{ child.id }} ">
+            <button data-id="{{ child.id }}"
+              style="border-radius: 5px; background-color: rgb(151, 39, 19); color: white; border: none; padding: 5px;">
+              EXPLOIT
+            </button>
+
+          </a>
+
+        </td>
+      </tr>
+
+
+      {%endfor%}
+
+      <!-- <tr>
+            <th scope="row">1</th>
+            
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+           
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            
+          </tr> -->
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock content %}

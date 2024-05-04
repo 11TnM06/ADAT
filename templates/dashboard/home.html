@@ -1,0 +1,28 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/signup.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+</head>
+
+
+<body>
+    {% csrf_token %}
+    Welcome to ADAT
+    {% comment %} button logout {% endcomment %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <button id="logout_button" type="submit">Logout</button>
+    </form>
+</body>
+</html>
+<script>
+    document.getElementById("logout_button").addEventListener("click", function(){
+        window.location.href = "/accounts/login";
+    });
+</script>
