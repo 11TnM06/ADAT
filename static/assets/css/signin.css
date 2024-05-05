@@ -71,6 +71,8 @@ label {
     font-weight: 550;
     float: right;
     font-size: small;
+    margin-top: -20px;
+
 }
 
 .btn-secondary {
@@ -84,6 +86,7 @@ label {
     font-size: medium;
     float: right;
     margin-right: 20px;
+    margin-top: -20px;
 
 }
 
@@ -109,6 +112,11 @@ label {
 .form-button-login {
     margin-top: 50px;
 }
+.alert.alert-danger {
+    color: red;
+    font-size: xx-medium;
+    margin-left: 10px;
+}
 
 
 @media screen and (max-width: 768px) {
@@ -127,7 +135,7 @@ label {
         border-radius: 5px;
         margin-right: -20px;
     }
-    .btn-primary {
+    .form-button-login .btn-primary {
         background-color: #0b57d0;
         border: none;
         color: #fff;
@@ -137,21 +145,32 @@ label {
         font-weight: 550;
         font-size: small;
         float: none;
+        margin-top: -10px;
     }
-    
-    .btn-secondary {
+    .form-button-login .btn-secondary {
         border: none;
         background-color: #fff;
         color: #357ae8;
-        padding: 10px 20px;
+        padding: 10px 15px;
         border-radius: 20px;
         cursor: pointer;
         font-weight: 600;
         font-size: small;
         margin-right: 10px;
-        float: none;
-    
+        float: left;
+        margin-top: -10px;
     }
+
+    .btn-primary:hover {
+        background-color: #357ae8;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #f2f2f2;
+    }
+
+    
+
     .card .card-body {
         margin-top: 10px;
     }

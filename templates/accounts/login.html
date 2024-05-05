@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/signin.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}"> {% endcomment %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -29,11 +30,16 @@
                         <div class="form-group">
                             <input placeholder="Password" type="password" class="form-control" id="password" name="password" required>
                         </div>
+                        {%if msg %}
+                            <div class="alert alert-danger" role="alert" >
+                                {{msg}}
+                            </div>
+                        {%endif%}
                         <div class="form-button-login">
                             <button type="submit" class="btn btn-primary">Sign In</button>
+                            <button type="button" id="secondary_button" class="btn btn-secondary">Create Account</button>
                         </div>
                     </form>
-                    <button id="secondary_button" class="btn btn-secondary">Create Account</button>
                 </div>
             </div>
             <div class="footer">
