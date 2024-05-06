@@ -2,27 +2,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/signup.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/home.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}"> {% endcomment %}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 </head>
 
 
-<body>
-    {% csrf_token %}
-    Welcome to ADAT
-    {% comment %} button logout {% endcomment %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <button id="logout_button" type="submit">Logout</button>
-    </form>
+<body> 
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1">
+                <img src="{% static '/assets/img/logo_adat_1.png' %}" alt="Logo" class="logo">
+                
+            </div>
+            <div class="col-2 title ps-3">
+                ADAT
+            </div>
+            <div class="col-md-5 mx-auto pt-4">
+                <div class="input-group">
+                    <input class="form-control border-end-0 border rounded-pill p-3" type="search" placeholder="Search" id="example-search-input"  style="font-family: Nunito, sans-serif;">
+                    <span class="input-group-append">
+                        <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                            <img src="{% static '/assets/img/search-icon.jpg' %}" alt="Icon" class="search-icon">
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-3 ms-5">
+                <div class="dropdown dropend">
+                    <img src="{% static '/assets/img/neko.jpg' %}" class="float-end avatar dropdown-toggle rounded-circle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu rounded-4" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Profile</a></li>
+                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Settings</a></li>
+                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">About</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'logout' %}" style="font-family: Nunito, sans-serif;">Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2 sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item" style="font-family: Nunito, sans-serif;">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="font-family: Nunito, sans-serif;">Scan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="font-family: Nunito, sans-serif;">Exploit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="font-family: Nunito, sans-serif;">Sessions</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-9 bg-white rounded">
+                xin chao
+            </div>
+        </div>
+        
+    </div>
+      
 </body>
 </html>
-<script>
-    document.getElementById("logout_button").addEventListener("click", function(){
-        window.location.href = "/accounts/login";
-    });
-</script>

@@ -23,40 +23,49 @@
                 <div class="card-body">
                     <form method="post" action="">
                         {% csrf_token %}
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3 px-md-1">
-                                  <div class="form-group">
-                                    {{ form.username }}
-                                  </div>
-                                </div>
-                              </div>
-                            <div class="row">
-                                <div class="col-md-3 px-md-1">
-                                    <div class="form-group">
-                                    {{ form.email }}
+                        {% if success %}
+                            <div>Create account successfully! <br> Please <a href={% url 'login' %}>authenticate</a> to use the new account. </div>  
+                        {% else %}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3 px-md-1">
+                                        <div class="form-group">
+                                            {{ form.username }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 px-md-1">
-                                  <div class="form-group">
-                                    {{ form.password1 }}
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 px-md-1">
-                                    <div class="form-group">
-                                    {{ form.password2 }}
+                                <span class="alert alert-danger" style="color:red">{{ form.username.errors }}</span>
+                                <div class="row">
+                                    <div class="col-md-3 px-md-1">
+                                        <div class="form-group">
+                                        {{ form.email }}
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="alert alert-danger" style="color:red">{{ form.email.errors }}</span>
+                                <div class="row">
+                                    <div class="col-md-3 px-md-1">
+                                    <div class="form-group">
+                                        {{ form.password1 }}
+                                    </div>
+                                    </div>
+                                </div>
+                                <span class="alert alert-danger" style="color:red">{{ form.password1.errors }}</span>
+                                <div class="row">
+                                    <div class="col-md-3 px-md-1">
+                                        <div class="form-group">
+                                        {{ form.password2 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="alert alert-danger" style="color:red">{{ form.password2.errors }}</span>
                             </div>
-                        </div>
-                        <div class="form-button-login">
-                            <button type="submit" class="btn btn-primary">Create Account</button>
-                            <button id="secondary_button" class="btn btn-secondary">Sign in</button>
-                        </div>
+                            <div class="form-button-login">
+                                <button type="submit" class="btn btn-primary">Create Account</button>
+                                <button id="secondary_button" class="btn btn-secondary">Sign in</button>
+                            </div>
+                        {% endif %}
+
                     </form>
                     
                 </div>

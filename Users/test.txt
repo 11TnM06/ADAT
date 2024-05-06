@@ -1,9 +1,4 @@
 test 
 test@gmail.com
-123qwea
-123qwea
-
-{{ form.username }}
-{{ form.email }}
-{{ form.password1 }}
-{{ form.password2 }}
+123456aA@
+123456aA@

@@ -1,0 +1,52 @@
+body {
+    font-family: "Nunito", sans-serif;
+    background-color: #f6f8fc;
+}
+.logo {
+    width: 96px;
+    height: 96px;
+}
+.title {
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-left: 15px;
+    color: #5f6368;
+}
+header {
+    display: flex;
+}
+
+.logo {
+    display: flex;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    margin-top: 18px;
+    margin-left: 15px;
+    border: 2px #5f6368 solid;
+}
+
+.navbar {
+    height: 130%;
+}
+
+.ms-n5 {
+    margin-left: -65px;
+    margin-top: 8px;
+}
+.search-icon {
+    width: 24px;
+    height: 24px;
+}
+.first-drop {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.last-drop {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
