@@ -49,7 +49,7 @@ class SignUpForm(UserCreationForm):
     password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "placeholder" : "Retype Password",
+                "placeholder" : "Password check",
                 "class": "form-control"
             }
         ))

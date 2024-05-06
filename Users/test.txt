@@ -1,0 +1,9 @@
+test 
+test@gmail.com
+123qwea
+123qwea
+
+{{ form.username }}
+{{ form.email }}
+{{ form.password1 }}
+{{ form.password2 }}
