@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,37 +7,38 @@
     {% bootstrap_javascript %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/home.css' %}">
-    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}"> {% endcomment %}
-
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/home.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 </head>
 
-
 <body> 
     
     <div class="container-fluid">
         <div class="row">
-            <div class="col-1">
-                <img src="{% static '/assets/img/logo_adat_1.png' %}" alt="Logo" class="logo">
-                
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="{% static '/assets/img/logo_adat_1.png' %}" alt="Logo" class="logo">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="title">ADAT</div>
+                    </div>
+                </div>
             </div>
-            <div class="col-2 title ps-3">
-                ADAT
-            </div>
-            <div class="col-md-5 mx-auto pt-4">
-                <div class="input-group">
-                    <input class="form-control border-end-0 border rounded-pill p-3" type="search" placeholder="Search" id="example-search-input"  style="font-family: Nunito, sans-serif;">
+            
+            <div class="col-md-8 pt-2" style="margin-top: 2px">
+                <div class="input-group center" style="width:65%">
+                    <input class="form-control border-end-0 border rounded-pill p-2" type="search" placeholder="Search" id="search-input" style="background-color: #EAF1FB; font-family: Nunito, sans-serif;">
                     <span class="input-group-append">
-                        <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                        <button id="search-button" class="btn btn-sm btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
                             <img src="{% static '/assets/img/search-icon.jpg' %}" alt="Icon" class="search-icon">
                         </button>
                     </span>
                 </div>
             </div>
-            <div class="col-3 ms-5">
+            <div class="col-md-1 ms-5">
                 <div class="dropdown dropend">
                     <img src="{% static '/assets/img/neko.jpg' %}" class="float-end avatar dropdown-toggle rounded-circle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <ul class="dropdown-menu rounded-4" aria-labelledby="dropdownMenuButton1">
@@ -50,25 +51,19 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-2 sidebar">
-                <ul class="nav flex-column">
-                    <li class="nav-item" style="font-family: Nunito, sans-serif;">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="font-family: Nunito, sans-serif;">Scan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="font-family: Nunito, sans-serif;">Exploit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="font-family: Nunito, sans-serif;">Sessions</a>
-                    </li>
+                <div class="row-1 sidebar-item" onclick="navigateTo('/home')" id="home">Home</div>
+                <div class="row-1 sidebar-item" onclick="toggleDropdown('scanDropdown')" id="scan">Scan</div>
+                <ul id="scanDropdown" class="sidebar-list">
+                    <li>Target</li>
+                    <li>Task</li>
+                    <li>Report</li>
                 </ul>
+                <div class="row-1 sidebar-item" onclick="navigateTo('/exploit')" id="exploit">Exploit</div>
+                <div class="row-1 sidebar-item" onclick="navigateTo('/sessions')" id="sessions">Sessions</div>
             </div>
-            <div class="col-9 bg-white rounded">
+            <div class="col-9 bg-white body_content mt-3" style="margin-left: 15px;">
                 xin chao
             </div>
         </div>
@@ -77,3 +72,57 @@
       
 </body>
 </html>
+
+<script>
+    window.onload = function()  {
+        if (window.location.pathname === '/home/') {
+            document.getElementById('home').classList.add('sidebar-item-background-color');
+        }
+        var dropdown = document.getElementById("scanDropdown");     
+        dropdown.style.display = 'none';
+    };
+    function navigateTo(path) {
+      // Remove 'active' class from all sidebar items
+        var sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(function(item) {
+            item.classList.remove('active');
+        });
+        
+        // Add 'active' class to the clicked item
+        event.target.classList.add('active');
+    
+        // Navigate to the specified path after a short delay (for demonstration)
+        setTimeout(function() {
+            window.location.href = path;
+        }, 500);
+        
+    }
+    function toggleDropdown(id) {
+        var dropdown = document.getElementById(id);
+        var listItems = dropdown.querySelectorAll('li');
+        var isHidden = dropdown.style.display === 'none';
+    
+        // Hide all other dropdowns
+        var allDropdowns = document.querySelectorAll('.sidebar-list');
+        allDropdowns.forEach(function(item) {
+          if (item.id !== id) {
+            item.style.display = 'none';
+          }
+        });
+    
+        // Toggle visibility of this dropdown
+        dropdown.style.display = isHidden ? 'block' : 'none';
+
+        // If the dropdown is visible, push content below down
+        if (!isHidden) {
+          var height = 0;
+          listItems.forEach(function(item) {
+            height += item.offsetHeight;
+          });
+          dropdown.parentElement.style.marginBottom = height + 'px';
+        } else {
+          dropdown.parentElement.style.marginBottom = '0';
+        }
+    }
+    
+</script>
