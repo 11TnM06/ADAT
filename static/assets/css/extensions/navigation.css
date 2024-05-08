@@ -1,0 +1,34 @@
+.logo {
+    width: 60px;
+    height: auto;
+}
+.title {
+    font-size: 26px;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #5f6368;
+    margin-top: 10px;
+}
+header {
+    display: flex;
+}
+.avatar {
+    width: 42px;
+    height: 42px;
+    margin-top: 12px;
+    margin-left: 15px;
+    border: 2px #5f6368 solid;
+}
+
+.navbar {
+    height: 130%;
+}
+
+.ms-n5 {
+    margin-left: -50px;
+    margin-top: 5px;
+}
+.search-icon {
+    width: 20px;
+    height: 20px;
+}

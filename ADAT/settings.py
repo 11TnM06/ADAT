@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'Users',
     'Core',
     'GVM',
-    'bootstrap5'
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [

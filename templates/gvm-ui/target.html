@@ -1,137 +1,139 @@
+{% extends 'extensions/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/thesis/home.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-</head>
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/gvm/target.css' %}">
+{% endblock stylesheets%}
 
-<body> 
-    
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="{% static '/assets/img/logo_adat_1.png' %}" alt="Logo" class="logo">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="title">ADAT</div>
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mb-4 section-name">Create Target</h2>
+            <form id="create_target">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control border-bottom-only" style="width:49%" placeholder="Target Name" id="name" name="name" required />
                     </div>
                 </div>
-            </div>
-            
-            <div class="col-md-8 pt-2" style="margin-top: 2px">
-                <div class="input-group center" style="width:65%">
-                    <input class="form-control border-end-0 border rounded-pill p-2" type="search" placeholder="Search" id="search-input" style="background-color: #EAF1FB; font-family: Nunito, sans-serif;">
-                    <span class="input-group-append">
-                        <button id="search-button" class="btn btn-sm btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
-                            <img src="{% static '/assets/img/search-icon.jpg' %}" alt="Icon" class="search-icon">
-                        </button>
-                    </span>
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control border-bottom-only" id="hosts" placeholder="Host" name="host" required />
+                    </div>
+                    <div class="col">
+                        <select class="form-select border-bottom-only" placeholder="Port" id="port_lists" name="port_lists" required>
+                            <option value="" hidden selected disabled>Please select specific port</option>
+                            {% for child in port_lists%}
+                                <option value="{{child.id}}">{{child.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-1 ms-5">
-                <div class="dropdown dropend">
-                    <img src="{% static '/assets/img/neko.jpg' %}" class="float-end avatar dropdown-toggle rounded-circle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <ul class="dropdown-menu rounded-4" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Profile</a></li>
-                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Settings</a></li>
-                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">About</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{% url 'logout' %}" style="font-family: Nunito, sans-serif;">Log Out</a></li>
-                    </ul>
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control border-bottom-only" placeholder="Comment" id="comment" name="comment" />
+                    </div>
                 </div>
-            </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
         </div>
-        <div class="row mt-3">
-            <div class="col-2 sidebar">
-                <div class="row-1 sidebar-item" onclick="navigateTo('/home')" id="home"> 
-                    <img class="sidebar-icon" src={% static "/assets/img/home.svg" %} alt="Home icon">
-                        Home 
-                </div>
-                <div class="row-1 sidebar-item" onclick="toggleDropdown('scanDropdown')" id="scan"> 
-                    <img class="sidebar-icon" src={% static "/assets/img/scan.svg" %} alt="Scan icon">
-                        Scan
-                </div>
-                <ul id="scanDropdown" class="sidebar-list" style="margin-left:0;" tabindex="0">
-                    <li class="sidebar-item" onclick="navigateTo('/gvm/target')">Target</li>
-                    <li class="sidebar-item" onclick="navigateTo('/gvm/task')">Task</li>
-                    <li class="sidebar-item" onclick="navigateTo('/gvm/report')">Report</li>
-                </ul>
-                <div class="row-1 sidebar-item" onclick="navigateTo('/exploit')" id="exploit"> 
-                    <img class="sidebar-icon" src={% static "/assets/img/exploit.svg" %} alt="Exploit icon">
-                        Exploit
-                </div>
-                <div class="row-1 sidebar-item" onclick="navigateTo('/sessions')" id="sessions">
-                    <img class="sidebar-icon" src={% static "/assets/img/sessions.svg" %} alt="Sessions icon">
-                        Sessions
-                </div> 
-            </div>
-            <div class="col-9 bg-white body_content mt-3" style="margin-left: 15px;">
-                xin chao
-            </div>
-        </div>
-        
     </div>
-      
-</body>
-</html>
-
+    <div class="col">
+        <h2 class="mt-3 section-name">Targets List</h2>
+        <div class="card text-dark target-list-title-row mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3">
+                        <strong>ID</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Name</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Comment</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Ports</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Hosts</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%for child in targets%}
+          <div class="card text-dark">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3">
+                  {{child.id}}
+                </div>
+                <div class="col-2">
+                  {{child.name}}
+                </div>
+                <div class="col-2">
+                  {{child.comment}}
+                </div>
+                <div class="col-2">
+                  {{child.port_list}}
+                </div>
+                <div class="col-2">
+                  {{child.hosts}}
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="margin-left:-15px;">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%endfor%}
+    </div>
+</div>
+{% endblock content%}
+{% block javascripts %}
 <script>
-    window.onload = function()  {
-        if (window.location.pathname === '/home/') {
-            document.getElementById('home').classList.add('sidebar-item-background-color');
-        }
-        var dropdown = document.getElementById("scanDropdown");     
-        dropdown.style.display = 'none';
-    };
-    function navigateTo(path) {
-      // Remove 'active' class from all sidebar items
-        var sidebarItems = document.querySelectorAll('.sidebar-item');
-        sidebarItems.forEach(function(item) {
-            item.classList.remove('active');
+    async function deleteTarget() {
+        var token = "{{ csrf_token }}";
+        var target_id = event.target.id;
+        var url = '/gvm/target/' + target_id;
+        var response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': token
+            }
         });
-        event.target.classList.add('active');
-            setTimeout(function() {
-            window.location.href = path;
-        }, 500);
-        
-    }
-    function toggleDropdown(id) {
-        document.activeElement.blur();
-        var dropdown = document.getElementById(id);
-        var listItems = dropdown.querySelectorAll('li');
-        var isHidden = dropdown.style.display === 'none';
-    
-        // Hide all other dropdowns
-        var allDropdowns = document.querySelectorAll('.sidebar-list');
-        allDropdowns.forEach(function(item) {
-          if (item.id !== id) {
-            item.style.display = 'none';
-          }
-        });
-    
-        // Toggle visibility of this dropdown
-        dropdown.style.display = isHidden ? 'block' : 'none';
 
-        // If the dropdown is visible, push content below down
-        if (!isHidden) {
-          var height = 0;
-          listItems.forEach(function(item) {
-            height += item.offsetHeight;
-          });
-          dropdown.parentElement.style.marginBottom = height + 'px';
-        } else {
-          dropdown.parentElement.style.marginBottom = '0';
+        if (response.status == 200) {
+            document.getElementById("create_target").reset();
+            location.reload(true);
         }
     }
-    
+
+    async function create_target() {
+        const token = "{{ csrf_token }}";
+        const name = document.getElementById("name").value;
+        const comment = document.getElementById("comment").value;
+        const hosts = document.getElementById("hosts").value;
+        const port_lists = document.getElementById("port_lists").value;
+
+        const data = new FormData();
+        data.append('name', name);
+        data.append('comment', comment);
+        data.append('hosts', hosts);
+        data.append('port_lists', port_lists);
+
+        const response = await fetch('/gvm/target/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': token
+            },
+            body: data
+        });
+
+        if (response.status == 200) {
+            document.getElementById("create_target").reset();
+            location.reload(true);
+        }
+    }
 </script>
+{% endblock javascripts %}
