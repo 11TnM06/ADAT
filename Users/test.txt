@@ -1,4 +1,50 @@
-test 
-test@gmail.com
-123456aA@
-123456aA@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/extensions/base.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+</head>
+<body> 
+    <div class="col-md-2">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{% static '/assets/img/logo_adat_1.png' %}" alt="Logo" class="logo">
+            </div>
+            <div class="col-md-8">
+                <div class="title">ADAT</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8 pt-2" style="margin-top: 2px">
+        <div class="input-group center" style="width:65%">
+            <input class="form-control border-end-0 border rounded-pill p-2" type="search" placeholder="Search" id="search-input" style="background-color: #EAF1FB; font-family: Nunito, sans-serif;">
+            <span class="input-group-append">
+                <button id="search-button" class="btn btn-sm btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                    <img src="{% static '/assets/img/search-icon.jpg' %}" alt="Icon" class="search-icon">
+                </button>
+            </span>
+        </div>
+    </div>
+    <div class="col-md-1 ms-5">
+        <div class="dropdown dropend">
+            <img src="{% static '/assets/img/neko.jpg' %}" class="float-end avatar dropdown-toggle rounded-circle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <ul class="dropdown-menu rounded-4" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Profile</a></li>
+              <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Settings</a></li>
+              <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">About</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}" style="font-family: Nunito, sans-serif;">Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+

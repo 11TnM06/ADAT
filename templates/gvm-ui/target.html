@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/thesis/home.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+</head>
+
+<body> 
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="{% static '/assets/img/logo_adat_1.png' %}" alt="Logo" class="logo">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="title">ADAT</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8 pt-2" style="margin-top: 2px">
+                <div class="input-group center" style="width:65%">
+                    <input class="form-control border-end-0 border rounded-pill p-2" type="search" placeholder="Search" id="search-input" style="background-color: #EAF1FB; font-family: Nunito, sans-serif;">
+                    <span class="input-group-append">
+                        <button id="search-button" class="btn btn-sm btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                            <img src="{% static '/assets/img/search-icon.jpg' %}" alt="Icon" class="search-icon">
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-1 ms-5">
+                <div class="dropdown dropend">
+                    <img src="{% static '/assets/img/neko.jpg' %}" class="float-end avatar dropdown-toggle rounded-circle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu rounded-4" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Profile</a></li>
+                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">Settings</a></li>
+                      <li><a class="dropdown-item" href="#" style="font-family: Nunito, sans-serif;">About</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'logout' %}" style="font-family: Nunito, sans-serif;">Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-2 sidebar">
+                <div class="row-1 sidebar-item" onclick="navigateTo('/home')" id="home"> 
+                    <img class="sidebar-icon" src={% static "/assets/img/home.svg" %} alt="Home icon">
+                        Home 
+                </div>
+                <div class="row-1 sidebar-item" onclick="toggleDropdown('scanDropdown')" id="scan"> 
+                    <img class="sidebar-icon" src={% static "/assets/img/scan.svg" %} alt="Scan icon">
+                        Scan
+                </div>
+                <ul id="scanDropdown" class="sidebar-list" style="margin-left:0;" tabindex="0">
+                    <li class="sidebar-item" onclick="navigateTo('/gvm/target')">Target</li>
+                    <li class="sidebar-item" onclick="navigateTo('/gvm/task')">Task</li>
+                    <li class="sidebar-item" onclick="navigateTo('/gvm/report')">Report</li>
+                </ul>
+                <div class="row-1 sidebar-item" onclick="navigateTo('/exploit')" id="exploit"> 
+                    <img class="sidebar-icon" src={% static "/assets/img/exploit.svg" %} alt="Exploit icon">
+                        Exploit
+                </div>
+                <div class="row-1 sidebar-item" onclick="navigateTo('/sessions')" id="sessions">
+                    <img class="sidebar-icon" src={% static "/assets/img/sessions.svg" %} alt="Sessions icon">
+                        Sessions
+                </div> 
+            </div>
+            <div class="col-9 bg-white body_content mt-3" style="margin-left: 15px;">
+                xin chao
+            </div>
+        </div>
+        
+    </div>
+      
+</body>
+</html>
+
+<script>
+    window.onload = function()  {
+        if (window.location.pathname === '/home/') {
+            document.getElementById('home').classList.add('sidebar-item-background-color');
+        }
+        var dropdown = document.getElementById("scanDropdown");     
+        dropdown.style.display = 'none';
+    };
+    function navigateTo(path) {
+      // Remove 'active' class from all sidebar items
+        var sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(function(item) {
+            item.classList.remove('active');
+        });
+        event.target.classList.add('active');
+            setTimeout(function() {
+            window.location.href = path;
+        }, 500);
+        
+    }
+    function toggleDropdown(id) {
+        document.activeElement.blur();
+        var dropdown = document.getElementById(id);
+        var listItems = dropdown.querySelectorAll('li');
+        var isHidden = dropdown.style.display === 'none';
+    
+        // Hide all other dropdowns
+        var allDropdowns = document.querySelectorAll('.sidebar-list');
+        allDropdowns.forEach(function(item) {
+          if (item.id !== id) {
+            item.style.display = 'none';
+          }
+        });
+    
+        // Toggle visibility of this dropdown
+        dropdown.style.display = isHidden ? 'block' : 'none';
+
+        // If the dropdown is visible, push content below down
+        if (!isHidden) {
+          var height = 0;
+          listItems.forEach(function(item) {
+            height += item.offsetHeight;
+          });
+          dropdown.parentElement.style.marginBottom = height + 'px';
+        } else {
+          dropdown.parentElement.style.marginBottom = '0';
+        }
+    }
+    
+</script>

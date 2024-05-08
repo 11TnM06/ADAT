@@ -22,5 +22,6 @@ urlpatterns = [
     path('accounts/', include('Users.urls'), name='Users'),
     path('admin/', admin.site.urls),
     path('home/', login_required(core.Home_View.as_view()), name='Core'),
-    path('core/', include('Core.urls'), name='Core')
+    path('core/', include('Core.urls'), name='Core'),
+    path('gvm/', include('GVM.urls'), name='GVM')
 ]
