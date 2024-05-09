@@ -1,10 +1,10 @@
 import xmltodict
+import gvm
 from gvm.connections import UnixSocketConnection
 from gvm.protocols.gmp import Gmp
 from gvm.protocols.latest import Osp
 import json
 import xml.etree.ElementTree as ET
-import gvm
 from bs4 import BeautifulSoup
 path = '/run/gvmd/gvmd.sock'
 username = "admin"

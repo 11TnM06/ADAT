@@ -1,1 +1,162 @@
 {% extends "extensions/base.html" %}
+{% load static %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/gvm/task.css' %}">
+{% endblock stylesheets%}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mb-4 section-name">Create Task</h2>
+            <form id="create_target">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control border-bottom-only" placeholder="Task Name" id="task_name" name="task_name" required />
+                    </div>
+                    <div class="col">
+                        <select class="form-select border-bottom-only" placeholder="Target Name" id="target_name" name="target_name" required>
+                            <option value="" hidden selected disabled>Target Name</option>
+                            {% for child in targets%}
+                                <option value="{{child.id}}">{{child.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <select class="form-select border-bottom-only" placeholder="Scanner" id="scanner" name="scanner" required>
+                            <option value="" hidden selected disabled>Scanner</option>
+                            {% for child in scanners%}
+                                <option value="{{child.id}}">{{child.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select class="form-select border-bottom-only" placeholder="Scan Config" id="scan_config" name="scan_config" required>
+                            <option value="" hidden selected disabled>Scan Config</option>
+                            {% for child in scanner_lists%}
+                                <option value="{{child.id}}">{{child.name}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" class="form-control border-bottom-only" placeholder="Comment" id="comment" name="comment" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+    <div class="col">
+        <h2 class="mt-3 section-name">Tasks List</h2>
+        <div class="card text-dark target-list-title-row mt-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-1">
+                        <strong>Task ID</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Task Name</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Target Name</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Comment</strong>
+                    </div>
+                    <div class="col-2">
+                        <strong>Scanner</strong>
+                    </div>
+                    <div class="col-1">
+                        <strong>Config</strong>
+                    </div>
+                    <div class="col-1">
+                        <strong>Status</strong>
+                    </div>
+                    <div class="col-1">
+                        <strong>Action</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%for child in targets%}
+          <div class="card text-dark">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-2">
+                  {{child.id}}
+                </div>
+                <div class="col-2">
+                  {{child.name}}
+                </div>
+                <div class="col-2">
+                  {{child.comment}}
+                </div>
+                <div class="col-2">
+                  {{child.port_list}}
+                </div>
+                <div class="col-2">
+                  {{child.hosts}}
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="float:right">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%endfor%}
+    </div>
+</div>
+{% endblock content%}
+{% block javascripts %}
+<script>
+    async function deleteTarget() {
+        var token = "{{ csrf_token }}";
+        var target_id = event.target.id;
+        var url = '/gvm/target/' + target_id;
+        var response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': token
+            }
+        });
+
+        if (response.status == 200) {
+            document.getElementById("create_target").reset();
+            location.reload(true);
+        }
+    }
+
+    async function create_target() {
+        const token = "{{ csrf_token }}";
+        const name = document.getElementById("name").value;
+        const comment = document.getElementById("comment").value;
+        const hosts = document.getElementById("hosts").value;
+        const port_lists = document.getElementById("port_lists").value;
+
+        const data = new FormData();
+        data.append('name', name);
+        data.append('comment', comment);
+        data.append('hosts', hosts);
+        data.append('port_lists', port_lists);
+
+        const response = await fetch('/gvm/target/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': token
+            },
+            body: data
+        });
+
+        if (response.status == 200) {
+            document.getElementById("create_target").reset();
+            location.reload(true);
+        }
+    }
+</script>
+{% endblock javascripts %}
+

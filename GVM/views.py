@@ -51,6 +51,31 @@ class Task_View(View):
 class Report_View(View):
     def get(self, request):
         return render(request, "gvm-ui/report.html")
+class TaskDetail_View(View):
+    def get(self, request):
+        scancofig = gvm.get_scan_configs()
+        scancofig= ET.fromstring(scancofig).findall('config')
+        scancofig=[{"id":child.attrib['id'],"name":child.find('name').text} for child in scancofig]
+
+        scanners = gvm.get_scanners()
+        scanners= ET.fromstring(scanners).findall('scanner')
+        scanners=[{"id":child.attrib['id'],"name":child.find('name').text} for child in scanners]
+
+        targets = gvm.get_targets()
+        targets = ET.fromstring(targets).findall('target')
+        targets = [{"name": child.find('name').text, "id": child.attrib['id']} for child in targets]
+
+        response = gvm.get_tasks()
+        print(response)
+        tasks = ET.fromstring(response).findall('task')
+        #  them target
+        #  them status
+        # for child in tasks:
+        #     print([x.find('report') for x in child.findall('last_report') if int(child.find('report_count').text) > 0])
+        tasks = [{"name": child.find("name").text, "id": child.attrib['id'],"comment":child.find("comment").text,"target": child.find('target').find('name').text,"scanner":child.find('scanner').find('name').text,"config":child.find("config").find('name').text, 'status':child.find("status").text, "report": "None" if len([x.find('report') for x in child.findall('last_report') if int(child.find('report_count').text) > 0])==0 else [x.find('report').attrib['id'] for x in child.findall('last_report') if int(child.find('report_count').text)][0] }
+                   for child in tasks]
+        # print(tasks)
+        return render(request, "gvm-ui/task.html",{'scanner_lists':scancofig,"scanners":scanners, "targets":targets, "tasks":tasks})
         
 
     

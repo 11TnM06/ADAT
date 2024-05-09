@@ -42,7 +42,7 @@
         <div class="card text-dark target-list-title-row mt-4">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-2">
                         <strong>ID</strong>
                     </div>
                     <div class="col-2">
@@ -64,7 +64,7 @@
           <div class="card text-dark">
             <div class="card-body">
               <div class="row">
-                <div class="col-3">
+                <div class="col-2">
                   {{child.id}}
                 </div>
                 <div class="col-2">
@@ -79,8 +79,8 @@
                 <div class="col-2">
                   {{child.hosts}}
                 </div>
-                <div class="col-1">
-                    <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="margin-left:-15px;">Delete</button>
+                <div class="col-2">
+                    <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="float:right">Delete</button>
                 </div>
               </div>
             </div>
