@@ -38,7 +38,7 @@ class Target_View(View):
             port_lists = port_lists.findall("port_list")
             port_lists_id = [{'name': child.find(
                 'name').text, "id": child.attrib['id']} for child in port_lists]
-            return render(request, "gvm/target.html", {"port_lists": port_lists_id})
+            return render(request, "gvm-ui/target.html", {"port_lists": port_lists_id})
         gvm.create_target(hosts=[hosts], comment=comment,
                           name=name, port_list_id=port_lists)
         return self.get(request)

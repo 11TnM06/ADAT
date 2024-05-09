@@ -55,14 +55,14 @@
         <div class="card text-dark target-list-title-row mt-4">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-1">
+                    <div class="col-2">
                         <strong>Task ID</strong>
                     </div>
-                    <div class="col-2">
-                        <strong>Task Name</strong>
+                    <div class="col-1">
+                        <strong>Task</strong>
                     </div>
-                    <div class="col-2">
-                        <strong>Target Name</strong>
+                    <div class="col-1">
+                        <strong>Target</strong>
                     </div>
                     <div class="col-2">
                         <strong>Comment</strong>
@@ -76,30 +76,36 @@
                     <div class="col-1">
                         <strong>Status</strong>
                     </div>
-                    <div class="col-1">
+                    <div class="col-2">
                         <strong>Action</strong>
                     </div>
                 </div>
             </div>
         </div>
-        {%for child in targets%}
+        {%for child in tasks%}
           <div class="card text-dark">
             <div class="card-body">
               <div class="row">
                 <div class="col-2">
                   {{child.id}}
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                   {{child.name}}
+                </div>
+                <div class="col-1">
+                  {{child.target}}
                 </div>
                 <div class="col-2">
                   {{child.comment}}
                 </div>
                 <div class="col-2">
-                  {{child.port_list}}
+                  {{child.scanner}}
                 </div>
-                <div class="col-2">
-                  {{child.hosts}}
+                <div class="col-1">
+                    {{child.config}}
+                  </div>
+                <div class="col-1">
+                    {{child.status}}
                 </div>
                 <div class="col-2">
                     <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="float:right">Delete</button>
@@ -113,23 +119,7 @@
 {% endblock content%}
 {% block javascripts %}
 <script>
-    async function deleteTarget() {
-        var token = "{{ csrf_token }}";
-        var target_id = event.target.id;
-        var url = '/gvm/target/' + target_id;
-        var response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': token
-            }
-        });
-
-        if (response.status == 200) {
-            document.getElementById("create_target").reset();
-            location.reload(true);
-        }
-    }
+    
 
     async function create_target() {
         const token = "{{ csrf_token }}";
