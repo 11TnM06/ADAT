@@ -33,8 +33,8 @@
                         <input type="text" class="form-control border-bottom-only" placeholder="Comment" id="comment" name="comment" />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="create_target()">Create</button>
             </form>
+            <button type="button" class="btn btn-primary" onclick="if(confirm('Are you sure you want to create this target?')) create_target()">Create</button>
         </div>
     </div>
     <div class="col">
@@ -116,9 +116,10 @@
             },
             body: data
         });
-        console.log("hehe: ", response.status)
+        console.log("xin chao")
+        console.log(response)
         if (response.status == 200) {
-            alert('Delete Target successfully');
+            alert('Create Target successfully');
             document.getElementById("create_target").reset();
             location.reload(true);
         }
@@ -137,7 +138,6 @@
                 'X-CSRFToken': token
             }
         });
-
         if (response.status == 200) {
             document.getElementById("create_target").reset();
             alert('Delete Target successfully');

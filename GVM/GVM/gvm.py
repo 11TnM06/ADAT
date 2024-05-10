@@ -27,7 +27,7 @@ with Gmp(connection=connection) as gmp:
         return response
     def delete_target(id):
         gmp.authenticate(username, password)
-        print(gmp.delete_target(target_id=id))
+        gmp.delete_target(target_id=id)
 
     def get_tasks():
         gmp.authenticate(username, password)
@@ -84,14 +84,16 @@ with Gmp(connection=connection) as gmp:
         return response
     def get_scan_configs():
         gmp.authenticate(username, password)
-        response= gmp.get_scan_configs()
+        response = gmp.get_scan_configs()
         return response
 
     def create_target(name, hosts, comment, port_list_id):
         gmp.authenticate(username, password)
-        gmp.create_target(name=name, hosts=hosts,
+        response = gmp.create_target(name=name, hosts=hosts,
                           comment=comment, port_list_id=port_list_id)
+        return response
         
     def create_task(name, config_id, target_id, scanner_id, comment):
         gmp.authenticate(username, password)
-        gmp.create_task(name=name, config_id=config_id, target_id=target_id, scanner_id=scanner_id, comment=comment)
+        response = gmp.create_task(name=name, config_id=config_id, target_id=target_id, scanner_id=scanner_id, comment=comment)
+        return response
