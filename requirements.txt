@@ -53,3 +53,4 @@ websockets==10.4
 xmltodict==0.13.0
 zope.interface==6.0
 django-bootstrap-v5==1.0.11
+-e ../python-gvm
