@@ -52,4 +52,4 @@ urllib3==1.26.15
 websockets==10.4
 xmltodict==0.13.0
 zope.interface==6.0
-django-bootstrap-v5
+django-bootstrap-v5==1.0.11
