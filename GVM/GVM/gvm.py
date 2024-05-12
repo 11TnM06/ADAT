@@ -23,7 +23,7 @@ with Gmp(connection=connection) as gmp:
 
     def get_target(id):
         gmp.authenticate(username, password)
-        response = gmp.get_target(id=id)
+        response = gmp.get_target(id)
         return response
     def delete_target(id):
         gmp.authenticate(username, password)

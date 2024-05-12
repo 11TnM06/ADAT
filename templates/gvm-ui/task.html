@@ -82,38 +82,42 @@
                 </div>
             </div>
         </div>
-        {%for child in tasks%}
-          <div class="card text-dark">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-2">
-                  {{child.id}}
+        <div id="tasks_list">
+            {%for child in tasks%}
+            <div class="card text-dark">
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-2">
+                    {{child.id}}
+                    </div>
+                    <div class="col-1">
+                    {{child.name}}
+                    </div>
+                    <div class="col-1">
+                    {{child.target}}
+                    </div>
+                    <div class="col-2">
+                    {{child.comment}}
+                    </div>
+                    <div class="col-2">
+                    {{child.scanner}}
+                    </div>
+                    <div class="col-1">
+                        {{child.config}}
+                    </div>
+                    <div class="col-1">
+                        {{child.status}}
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-primary" style="float:left">Report</button>
+                        <button class="btn btn-success"> Scan</button>
+                        <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="float:right">Delete</button>
+                    </div>
                 </div>
-                <div class="col-1">
-                  {{child.name}}
                 </div>
-                <div class="col-1">
-                  {{child.target}}
-                </div>
-                <div class="col-2">
-                  {{child.comment}}
-                </div>
-                <div class="col-2">
-                  {{child.scanner}}
-                </div>
-                <div class="col-1">
-                    {{child.config}}
-                  </div>
-                <div class="col-1">
-                    {{child.status}}
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="float:right">Delete</button>
-                </div>
-              </div>
             </div>
-          </div>
-        {%endfor%}
+            {%endfor%}
+        </div>
     </div>
 </div>
 {% endblock content%}

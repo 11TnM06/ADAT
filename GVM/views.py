@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
@@ -39,14 +39,27 @@ class Target_View(View):
             port_lists_id = [{'name': child.find(
                 'name').text, "id": child.attrib['id']} for child in port_lists]
             return render(request, "gvm-ui/target.html", {"port_lists": port_lists_id})
+
         create_target_response = gvm.create_target(hosts=[hosts], comment=comment, name=name, port_list_id=port_lists)
         create_target_response = ET.fromstring(create_target_response)
         target_id = create_target_response.attrib['id']
-        print(target_id)
-        return self.get(request)
+        target = gvm.get_target(target_id)
+        target = ET.fromstring(target).find('target')
+        target_data = {"name": target.find('name').text, "id": target.attrib['id'],
+            "hosts": target.find('hosts').text, "comment": target.find('comment').text,
+            "port_list": target.find('port_list').find('name').text,
+            "hosts": target.find('hosts').text,
+            "in_use": target.find('in_use').text,
+        }       
+        body_html = {"status": 200, "target": target_data}
+        response = JsonResponse(body_html) 
+        return response
     def delete(self, request, id):
         gvm.delete_target(id)
-        return self.get(request)
+        body_html = {"status": 200}
+        response = JsonResponse(body_html) 
+        print(type(response))
+        return response
 class Task_View(View):
     def get(self, request):
         return render(request, "gvm-ui/task.html")

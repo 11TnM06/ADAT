@@ -60,42 +60,77 @@
                 </div>
             </div>
         </div>
-        {%for child in targets%}
-          <div class="card text-dark" id="target_{{child.id}}">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-3">
-                  {{child.id}}
+        <div id="targets_list">
+            {%for child in targets%}
+            <div class="card text-dark" id="target_{{child.id}}">
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-3">
+                    {{child.id}}
+                    </div>
+                    <div class="col-2">
+                    {{child.name}}
+                    </div>
+                    <div class="col-2">
+                    {{child.comment}}
+                    </div>
+                    <div class="col-2">
+                    {{child.port_list}}
+                    </div>
+                    <div class="col-2">
+                    {{child.hosts}}
+                    </div>
+                    <div class="col-1">
+                        <button class="btn btn-danger" id="{{ child.id }}" onclick="if(confirm('Are you sure you want to delete this?')) deleteTarget();"
+                        style="margin-left:-15px;" {% if child.in_use is '1' %} disabled="disabled" class="disabled" {% endif %}>
+                            Delete
+                        </button>
+                    </div>
                 </div>
-                <div class="col-2">
-                  {{child.name}}
                 </div>
-                <div class="col-2">
-                  {{child.comment}}
-                </div>
-                <div class="col-2">
-                  {{child.port_list}}
-                </div>
-                <div class="col-2">
-                  {{child.hosts}}
-                </div>
-                <div class="col-1">
-                    <button class="btn btn-danger" id="{{ child.id }}" onclick="if(confirm('Are you sure you want to delete this?')) deleteTarget();"
-                    style="margin-left:-15px;" {% if child.in_use is '1' %} disabled="disabled" class="disabled" {% endif %}>
-                        Delete
-                    </button>
-                </div>
-              </div>
             </div>
-          </div>
-        {%endfor%}
+            {%endfor%}
+        </div>
     </div>
 </div>
 {% endblock content%}
     
 {% block javascripts %}
 <script>
-
+    function createTargetElement(target) {
+        const targetElement = document.createElement('div');
+        targetElement.className = 'card text-dark';
+        var target_id = target.id;
+        targetElement.id ="target_" + target.id;
+        targetElement.innerHTML = `
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3">
+                  ${target.id}
+                </div>
+                <div class="col-2">
+                  ${target.name}
+                </div>
+                <div class="col-2">
+                  ${target.comment}
+                </div>
+                <div class="col-2">
+                  ${target.port_list}
+                </div>
+                <div class="col-2">
+                  ${target.hosts}
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-danger" id="${target.id}" onclick="if(confirm('Are you sure you want to delete this?')) deleteTarget();"
+                    style="margin-left:-15px;" ${target.in_use === '1' ? 'disabled="disabled" class="disabled"' : ''}>
+                        Delete
+                    </button>
+                </div>
+              </div>
+            </div>
+        `;
+        return targetElement;
+    }
     async function create_target() {
         const token = "{{ csrf_token }}";
         const name = document.getElementById("name").value;
@@ -108,23 +143,26 @@
         data.append('comment', comment);
         data.append('hosts', hosts);
         data.append('port_lists', port_lists);
-
+        
         const response = await fetch('/gvm/target/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': token
             },
             body: data
-        });
-        console.log("xin chao")
-        console.log(response)
+        }).then((response) => response.json());
+        console.log("hehe: ", response);
         if (response.status == 200) {
-            alert('Create Target successfully');
             document.getElementById("create_target").reset();
-            location.reload(true);
+            const targetElement = createTargetElement(response.target);
+            const targetList = document.getElementById('targets_list');
+            targetList.prepend(targetElement);
+            alert('Create Target successfully');
         }
         else {
             alert('Create Target Error');
+            document.getElementById("create_target").reset();
+            location.reload(true);
         }
     }
     async function deleteTarget() {
