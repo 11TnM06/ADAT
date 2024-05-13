@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col">
             <h2 class="mb-4 section-name">Create Task</h2>
-            <form id="create_target">
+            <form id="create_task">
                 <div class="row mb-3">
                     <div class="col">
                         <input type="text" class="form-control border-bottom-only" placeholder="Task Name" id="task_name" name="task_name" required />
@@ -25,7 +25,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col">
-                        <select class="form-select border-bottom-only" placeholder="Scanner" id="scanner" name="scanner" required>
+                        <select class="form-select border-bottom-only" placeholder="Scanner" id="scanner_id" name="scanner_id" required>
                             <option value="" hidden selected disabled>Scanner</option>
                             {% for child in scanners%}
                                 <option value="{{child.id}}">{{child.name}}</option>
@@ -33,7 +33,7 @@
                         </select>
                     </div>
                     <div class="col">
-                        <select class="form-select border-bottom-only" placeholder="Scan Config" id="scan_config" name="scan_config" required>
+                        <select class="form-select border-bottom-only" placeholder="Scan Config" id="scan_config_id" name="scan_config_id" required>
                             <option value="" hidden selected disabled>Scan Config</option>
                             {% for child in scanner_lists%}
                                 <option value="{{child.id}}">{{child.name}}</option>
@@ -46,8 +46,8 @@
                         <input type="text" class="form-control border-bottom-only" placeholder="Comment" id="comment" name="comment" />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
             </form>
+            <button class="btn btn-primary float-end me-3" onclick="if(confirm('Are you sure you want to create this task?')) create_task()">Create</button>
         </div>
     </div>
     <div class="col">
@@ -67,7 +67,7 @@
                     <div class="col-2">
                         <strong>Comment</strong>
                     </div>
-                    <div class="col-2">
+                    <div class="col-1">
                         <strong>Scanner</strong>
                     </div>
                     <div class="col-1">
@@ -76,7 +76,7 @@
                     <div class="col-1">
                         <strong>Status</strong>
                     </div>
-                    <div class="col-2">
+                    <div class="col-3" style="text-align:center;">
                         <strong>Action</strong>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
         </div>
         <div id="tasks_list">
             {%for child in tasks%}
-            <div class="card text-dark">
+            <div class="card text-dark" id="task_{{child.id}}">
                 <div class="card-body">
                 <div class="row">
                     <div class="col-2">
@@ -99,7 +99,7 @@
                     <div class="col-2">
                     {{child.comment}}
                     </div>
-                    <div class="col-2">
+                    <div class="col-1">
                     {{child.scanner}}
                     </div>
                     <div class="col-1">
@@ -108,10 +108,10 @@
                     <div class="col-1">
                         {{child.status}}
                     </div>
-                    <div class="col-2">
-                        <button class="btn btn-primary" style="float:left">Report</button>
+                    <div class="col-3 d-flex justify-content-between">
+                        <button class="btn btn-primary">Report</button>
                         <button class="btn btn-success"> Scan</button>
-                        <button class="btn btn-danger" id="{{ child.id }}" onclick="deleteTarget()" style="float:right">Delete</button>
+                        <button class="btn btn-danger" id="delete_{{ child.id }}" onclick="if(confirm('Are you sure you want to delete this?')) deleteTask()">Delete</button>
                     </div>
                 </div>
                 </div>
@@ -123,32 +123,103 @@
 {% endblock content%}
 {% block javascripts %}
 <script>
-    
-
-    async function create_target() {
+    function createTaskElement(task) {
+        const taskElement = document.createElement('div');
+        taskElement.className = 'card text-dark';
+        var task_id = task.id;
+        taskElement.id ="task_" + task.id;
+        taskElement.innerHTML = `
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-2">
+                        ${task.id}
+                    </div>
+                    <div class="col-1">
+                        ${task.name}
+                    </div>
+                    <div class="col-1">
+                        ${task.target}
+                    </div>
+                    <div class="col-2">
+                        ${task.comment}
+                    </div>
+                    <div class="col-1">
+                        ${task.scanner}
+                    </div>
+                    <div class="col-1">
+                        ${task.config}
+                    </div>
+                    <div class="col-1">
+                        ${task.status}
+                    </div>
+                    <div class="col-3 d-flex justify-content-between">
+                        <button class="btn btn-primary">Report</button>
+                        <button class="btn btn-success"> Scan</button>
+                        <button class="btn btn-danger" id="delete_${task.id }" onclick="if(confirm('Are you sure you want to delete this?')) deleteTask()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        return taskElement;
+    }
+    async function create_task() {
         const token = "{{ csrf_token }}";
-        const name = document.getElementById("name").value;
+        const name = document.getElementById("task_name").value;
         const comment = document.getElementById("comment").value;
-        const hosts = document.getElementById("hosts").value;
-        const port_lists = document.getElementById("port_lists").value;
+        const target_id = document.getElementById("target_name").value;
+        const scanner_id = document.getElementById("scanner_id").value;
+        const config_id = document.getElementById("scan_config_id").value;
 
         const data = new FormData();
         data.append('name', name);
         data.append('comment', comment);
-        data.append('hosts', hosts);
-        data.append('port_lists', port_lists);
-
-        const response = await fetch('/gvm/target/', {
+        data.append('target_id', target_id);
+        data.append('scanner_id', scanner_id);
+        data.append('config_id', config_id);
+        const response = await fetch('/gvm/task/', {
             method: 'POST',
             headers: {
                 'X-CSRFToken': token
             },
             body: data
-        });
-
-        if (response.status == 200) {
-            document.getElementById("create_target").reset();
-            location.reload(true);
+        }).then((response) => response.json());
+        console.log("hehe: ", response);
+        if (response.status == "201") {
+            document.getElementById("create_task").reset();
+            const taskElement = createTaskElement(response.task);
+            const taskList = document.getElementById('tasks_list');
+            taskList.prepend(taskElement);
+            alert('Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
+        }
+        else {
+            alert('Create Task Error');
+            document.getElementById("create_task").reset();
+            alert('Error Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
+        }
+    }
+    async function deleteTask() {
+        var token = "{{ csrf_token }}";
+        var task_id = event.target.id.replace('delete_', '');
+        var url = '/gvm/task/' + task_id;
+        var response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': token
+            }
+        }).then((response) => response.json());
+        if (response.status == "200") {
+            document.getElementById("create_task").reset();
+            alert('Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
+            const taskElement = document.getElementById(`task_${task_id}`);
+            if(taskElement) {
+                taskElement.remove();
+            }
+            else {
+                alert('Update Task List Error');
+            }
+        } else {
+            alert('Error Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
         }
     }
 </script>

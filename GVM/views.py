@@ -42,31 +42,31 @@ class Target_View(View):
 
         create_target_response = gvm.create_target(hosts=[hosts], comment=comment, name=name, port_list_id=port_lists)
         create_target_response = ET.fromstring(create_target_response)
-        target_id = create_target_response.attrib['id']
-        target = gvm.get_target(target_id)
-        target = ET.fromstring(target).find('target')
-        target_data = {"name": target.find('name').text, "id": target.attrib['id'],
-            "hosts": target.find('hosts').text, "comment": target.find('comment').text,
-            "port_list": target.find('port_list').find('name').text,
-            "hosts": target.find('hosts').text,
-            "in_use": target.find('in_use').text,
-        }       
-        body_html = {"status": 200, "target": target_data}
+        body_html = {"status": create_target_response.attrib['status'], 
+        "status_text": create_target_response.attrib['status_text']} 
+        if  create_target_response.attrib['status'] == "201":
+            target_id = create_target_response.attrib['id']
+            target = gvm.get_target(target_id)
+            target = ET.fromstring(target).find('target')
+            target_data = {"name": target.find('name').text, "id": target.attrib['id'],
+                "hosts": target.find('hosts').text, "comment": target.find('comment').text,
+                "port_list": target.find('port_list').find('name').text,
+                "hosts": target.find('hosts').text,
+                "in_use": target.find('in_use').text,
+            }        
+            body_html.update({"target": target_data})
         response = JsonResponse(body_html) 
         return response
     def delete(self, request, id):
-        gvm.delete_target(id)
-        body_html = {"status": 200}
+        delete_response = gvm.delete_target(id)
+        delete_response = ET.fromstring(delete_response)
+        body_html = {"status": delete_response.attrib["status"], "status_text": delete_response.attrib["status_text"]}
         response = JsonResponse(body_html) 
-        print(type(response))
         return response
-class Task_View(View):
-    def get(self, request):
-        return render(request, "gvm-ui/task.html")
 class Report_View(View):
     def get(self, request):
         return render(request, "gvm-ui/report.html")
-class TaskDetail_View(View):
+class Task_View(View):
     def get(self, request):
         scancofig = gvm.get_scan_configs()
         scancofig= ET.fromstring(scancofig).findall('config')
@@ -81,16 +81,44 @@ class TaskDetail_View(View):
         targets = [{"name": child.find('name').text, "id": child.attrib['id']} for child in targets]
 
         response = gvm.get_tasks()
-        print(response)
         tasks = ET.fromstring(response).findall('task')
-        #  them target
-        #  them status
-        # for child in tasks:
-        #     print([x.find('report') for x in child.findall('last_report') if int(child.find('report_count').text) > 0])
         tasks = [{"name": child.find("name").text, "id": child.attrib['id'],"comment":child.find("comment").text,"target": child.find('target').find('name').text,"scanner":child.find('scanner').find('name').text,"config":child.find("config").find('name').text, 'status':child.find("status").text, "report": "None" if len([x.find('report') for x in child.findall('last_report') if int(child.find('report_count').text) > 0])==0 else [x.find('report').attrib['id'] for x in child.findall('last_report') if int(child.find('report_count').text)][0] }
                    for child in tasks]
-        # print(tasks)
         return render(request, "gvm-ui/task.html",{'scanner_lists':scancofig,"scanners":scanners, "targets":targets, "tasks":tasks})
-        
+    def post(self, request):
+        name=request.POST.get("name", None)
+        config_id= request.POST.get("config_id", None)
+        target_id=request.POST.get("target_id", None)
+        scanner_id=request.POST.get("scanner_id", None)
+        comment=request.POST.get("comment", None)
+        print(name, config_id, target_id, scanner_id)
+        body_html = {}
+        if (name and config_id and target_id and scanner_id) is None:
+            message = "Please fill all the fields name, config_id, target_id, scanner_id"
+            body_html.update({"status": "404", "status_text": message})
+        else:
+            create_task_response = gvm.create_task(name, config_id, target_id, scanner_id, comment)
+            create_task_response = ET.fromstring(create_task_response)
+            body_html = {"status": create_task_response.attrib['status'],
+            "status_text": create_task_response.attrib['status_text']}
+            if create_task_response.attrib['status'] == "201":
+                task_id = create_task_response.attrib['id']
+                task = gvm.get_task(task_id)
+                task = ET.fromstring(task).find('task')
+                task_data = {"name": task.find('name').text, "id": task.attrib['id'],
+                    "comment": task.find('comment').text, "status": task.find('status').text,
+                    "target": task.find('target').find('name').text, "scanner": task.find('scanner').find('name').text,
+                    "config": task.find('config').find('name').text, "report": "None" if len([x.find('report') for x in task.findall('last_report') if int(task.find('report_count').text) > 0])==0 else [x.find('report').attrib['id'] for x in task.findall('last_report') if int(task.find('report_count').text)][0]}
+                body_html.update({"task": task_data})
+        response = JsonResponse(body_html) 
+        return response
+
+    def delete(self, request, id):
+        delete_response = gvm.delete_task(id)
+        delete_response = ET.fromstring(delete_response)
+        body_html = {"status": delete_response.attrib["status"], "status_text": delete_response.attrib["status_text"]}
+        response = JsonResponse(body_html) 
+        print(response)
+        return response
 
     

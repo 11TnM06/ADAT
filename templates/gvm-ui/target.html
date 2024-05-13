@@ -152,17 +152,17 @@
             body: data
         }).then((response) => response.json());
         console.log("hehe: ", response);
-        if (response.status == 200) {
+        if (response.status == "201") {
             document.getElementById("create_target").reset();
             const targetElement = createTargetElement(response.target);
             const targetList = document.getElementById('targets_list');
             targetList.prepend(targetElement);
-            alert('Create Target successfully');
+            alert('Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
         }
         else {
-            alert('Create Target Error');
+            alert('Error Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
             document.getElementById("create_target").reset();
-            location.reload(true);
+
         }
     }
     async function deleteTarget() {
@@ -175,10 +175,10 @@
                 'Content-Type': 'application/json',
                 'X-CSRFToken': token
             }
-        });
-        if (response.status == 200) {
+        }).then((response) => response.json());
+        if (response.status == "200") {
             document.getElementById("create_target").reset();
-            alert('Delete Target successfully');
+            alert('Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
             const targetElement = document.getElementById(`target_${target_id}`);
             if(targetElement) {
                 targetElement.remove();
@@ -187,7 +187,7 @@
                 alert('Update Target List Error');
             }
         } else {
-            alert('Delete Target Error');
+            alert('Error Code: ' + response.status + "\n\n" + "Message: " +  response.status_text);
         }
     }
 </script>

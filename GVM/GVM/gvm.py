@@ -27,7 +27,8 @@ with Gmp(connection=connection) as gmp:
         return response
     def delete_target(id):
         gmp.authenticate(username, password)
-        gmp.delete_target(target_id=id)
+        response = gmp.delete_target(target_id=id)
+        return response
 
     def get_tasks():
         gmp.authenticate(username, password)
@@ -40,7 +41,8 @@ with Gmp(connection=connection) as gmp:
         return response
     def delete_task(id):
         gmp.authenticate(username, password)
-        gmp.delete_task(task_id=id)
+        response = gmp.delete_task(task_id=id)
+        return response
     def start_task(id):
         gmp.authenticate(username, password)
         return gmp.start_task(task_id=id)
