@@ -65,7 +65,7 @@ class Target_View(View):
         return response
 class Report_View(View):
     def get(self, request):
-        return render(request, "gvm-ui/report.html")
+        return render(request, "gvm-ui/reports.html")
 class Task_View(View):
     def get(self, request):
         scancofig = gvm.get_scan_configs()
