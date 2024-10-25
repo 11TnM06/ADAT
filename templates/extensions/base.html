@@ -29,17 +29,21 @@
             </div>
             <div class="col-9 bg-white body_content mt-1" style="margin-left: 15px;">
                 {% block content %}
-                {% endblock content %}
+                {% endblock content %}   
             </div>
         </div>
-        <div class="footer">
-            {% include '../extensions/footer.html'%}
+        <div>
+            <div class="col-2">
+                MORE
+            </div>
+            <div class="col-9">
+                {% include '../extensions/footer.html'%}
+            </div>
         </div>
+        
     </div>
       
 </body>
 </html>
 {% block javascripts %}
 {% endblock javascripts %}
-
-
