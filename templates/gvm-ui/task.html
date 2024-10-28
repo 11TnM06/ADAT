@@ -108,10 +108,10 @@
                     <div class="col-1">
                         {{child.status}}
                     </div>
-                    <div class="col-3 d-flex justify-content-between">
-                        <button class="btn btn-primary">Report</button>
-                        <button class="btn btn-success"> Scan</button>
-                        <button class="btn btn-danger" id="delete_{{ child.id }}" onclick="if(confirm('Are you sure you want to delete this?')) deleteTask()">Delete</button>
+                    <div class="col-3 d-flex flex-wrap button-container">
+                        <button class="btn btn-primary me-2 mb-2">Report</button>
+                        <button class="btn btn-success me-2 mb-2"> Scan</button>
+                        <button class="btn btn-danger me-2 mb-2" id="delete_{{ child.id }}" onclick="if(confirm('Are you sure you want to delete this?')) deleteTask()">Delete</button>
                     </div>
                 </div>
                 </div>
