@@ -65,10 +65,6 @@ class Target_View(View):
         return response
 class Report_View(View):
     def get(self, request, id="15dafab8-6855-4740-a24e-06aa606e8674"):
-        # response = gvm.get_tasks()
-        # for child in ET.fromstring(response).findall('task'):
-        #     # print report id of task
-        #     print(child.find('last_report').find('report').attrib['id'])
         response = gvm.get_report(id=id)
         task_name = ET.fromstring(response).find('report').find('task').find("name").text
         response = ET.fromstring(response).find('report').find(
@@ -91,7 +87,7 @@ class Report_View(View):
                 "id":child.attrib['id'],
                 "name":child.find('name').text, 
                 "threat":child.find('threat').text,
-                "severity":child.find("severity").text,  
+                "severity":float(child.find("severity").text),  
                 "host":child.find("host").text, 
                 "port":child.find("port").text, 
                 # "detection":[
@@ -109,8 +105,7 @@ class Report_View(View):
             }
             for child in response
             ]
-        print(response)
-        return render(request, "gvm-ui/reports.html")
+        return render(request, "gvm-ui/report.html", {"response": response,"task_name":task_name, "counts":{"All":all, "High":high, "Medium": medium, "Low":low}})
 class Task_View(View):
     def get(self, request):
         scancofig = gvm.get_scan_configs()

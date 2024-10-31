@@ -1,0 +1,30 @@
+body {
+    background-color: #f5f7fa;
+}
+
+.header {
+    background-color: #e3f2fd;
+    border-radius: 10px;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.7em;
+    border-radius: 5px;
+}
+
+.btn-custom {
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #f76c6c;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #e05959;
+}

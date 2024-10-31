@@ -7,6 +7,7 @@ urlpatterns = [
     path('target/<str:id>', login_required(Target_View.as_view())),
     path('task/', login_required(Task_View.as_view())),
     path('task/<str:id>', login_required(Task_View.as_view())),
-    path('report/', login_required(Report_View.as_view()))
+    path('report/', login_required(Report_View.as_view())),
+    path('report/<str:id>', login_required(Report_View.as_view()))
     
 ]

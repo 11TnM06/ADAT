@@ -1,13 +1,65 @@
-{% extends "extensions/base.html" %}
+{% extends 'extensions/base.html' %}
 {% load static %}
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static '/assets/css/gvm/report.css' %}">
-{% endblock stylesheets%}
+  <link rel="stylesheet" type="text/css" href="{% static '/assets/css/gvm/report.css' %}" />
+{% endblock %}
 
 {% block content %}
+    <body>
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="header text-center text-primary mb-4">
+                <h4>{{ task_name }} | {{ counts }}</h4>
+            </div>
 
-{% endblock content%}
+            <!-- Table -->
+            <h2 class="mt-3 section-name">Tasks List</h2>
+            <div class="card text-dark mt-4" style="background-color: #F2F4F7;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-1"><strong>No.</strong></div>
+                        <div class="col-1"><strong>Name</strong></div>
+                        <div class="col-1"><strong>Threat</strong></div>
+                        <div class="col-1"><strong>Severity</strong></div>
+                        <div class="col-2"><strong>Host</strong></div>
+                        <div class="col-1"><strong>Port</strong></div>
+                        <div class="col-3"><strong>Description</strong></div>
+                        <div class="col-2"><strong>Metasploit</strong></div>
+                    </div>
+                </div>
+            </div>
+            {% for child in response %}
+                <div class="card text-dark" id="report_{{child.id}}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-1">{{ forloop.counter }}</div>
+                            <div class="col-1">{{ child.name }}</div>
+                            <div class="col-1">{{ child.threat }}</div>
+                            <div class="col-1" id={{child.severity}}>
+                                <span class="badge 
+                                {% if child.severity >= 7 %} bg-danger 
+                                {% elif child.severity >= 4 and child.severity < 7 %} bg-warning text-dark
+                                {% else %} bg-success 
+                                {% endif %}">
+                                  {{ child.severity }}
+                                </span>
+                            </div>
+                            <div class="col-2">{{ child.host }}</div>
+                            <div class="col-1">{{ child.port }}</div>
+                            <div class="col-3" style="word-wrap: break-word;">{{ child.description }}</div>
+                            <div class="col-2">
+                                <a target="_blank" href="/opra/auto/{{ child.id }}">
+                                <button class="btn btn-custom">EXPLOIT</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor%}
+        </div>
+    </body>
+{% endblock %}
 
 {% block javascripts %}
 
-{% endblock javascripts %}
+{% endblock %}
