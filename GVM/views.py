@@ -64,7 +64,52 @@ class Target_View(View):
         response = JsonResponse(body_html) 
         return response
 class Report_View(View):
-    def get(self, request):
+    def get(self, request, id="15dafab8-6855-4740-a24e-06aa606e8674"):
+        # response = gvm.get_tasks()
+        # for child in ET.fromstring(response).findall('task'):
+        #     # print report id of task
+        #     print(child.find('last_report').find('report').attrib['id'])
+        response = gvm.get_report(id=id)
+        task_name = ET.fromstring(response).find('report').find('task').find("name").text
+        response = ET.fromstring(response).find('report').find(
+            'report').find('results').findall('result')
+        all=0
+        high =0
+        medium =0
+        low =0
+        for child in response:
+            all+=1
+            text = child.find('threat').text
+            if text=="High":
+                high+=1
+            elif text == "Medium":
+                medium+=1
+            elif text == "Low":
+                low+=1
+        response = [
+            {
+                "id":child.attrib['id'],
+                "name":child.find('name').text, 
+                "threat":child.find('threat').text,
+                "severity":child.find("severity").text,  
+                "host":child.find("host").text, 
+                "port":child.find("port").text, 
+                # "detection":[
+                #                 {
+                #                 "id":child.find("detection").find("result").attrib['id'] if child.find('detection') is not None else None,
+                #                 "details":{[
+                #                                 {'name':x.find("result").find("details").findall('detail').find("name") if child.find('detection') is not None else None, 
+                #                                 "value":x.find("result").find("details").findall('detail').find("value") if child.find('detection') is not None else None } for x in child.find("detection")
+                #                 ]
+                                                
+                #                         }
+                #                 }
+                #             ]
+                "description":child.find("description").text, 
+            }
+            for child in response
+            ]
+        print(response)
         return render(request, "gvm-ui/reports.html")
 class Task_View(View):
     def get(self, request):
