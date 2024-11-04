@@ -1,3 +1,18 @@
+.btn-exploit {
+    background-color: #0b57d0;
+    border: none;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 550;
+}
+
+.btn-exploit:hover {
+    background-color: #357ae8;
+    color: #fff;
+}
+
+
 body {
     background-color: #f5f7fa;
 }
@@ -15,16 +30,11 @@ body {
     border-radius: 5px;
 }
 
-.btn-custom {
-    border-radius: 5px;
-    padding: 5px 10px;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: #f76c6c;
-    border: none;
-    transition: background-color 0.3s ease;
-}
-
-.btn-custom:hover {
-    background-color: #e05959;
+.section-name {
+    background-color: #7996c2;
+    border-radius: 20px;
+    padding: 5px;
+    color: white;
+    font-size: x-large;
+    padding-left: 25px;
 }

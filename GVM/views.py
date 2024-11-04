@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_protect
 import GVM.GVM.gvm as gvm
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
+import time
 
 class Target_View(View):
     def get(self, request):
@@ -64,7 +65,7 @@ class Target_View(View):
         response = JsonResponse(body_html) 
         return response
 class Report_View(View):
-    def get(self, request, id="15dafab8-6855-4740-a24e-06aa606e8674"):
+    def get(self, request, id):
         response = gvm.get_report(id=id)
         task_name = ET.fromstring(response).find('report').find('task').find("name").text
         response = ET.fromstring(response).find('report').find(
@@ -122,10 +123,12 @@ class Task_View(View):
 
         response = gvm.get_tasks()
         tasks = ET.fromstring(response).findall('task')
-        tasks = [{"name": child.find("name").text, "id": child.attrib['id'],"comment":child.find("comment").text,"target": child.find('target').find('name').text,"scanner":child.find('scanner').find('name').text,"config":child.find("config").find('name').text, 'status':child.find("status").text, "report": "None" if len([x.find('report') for x in child.findall('last_report') if int(child.find('report_count').text) > 0])==0 else [x.find('report').attrib['id'] for x in child.findall('last_report') if int(child.find('report_count').text)][0] }
+        tasks = [{"name": child.find("name").text, "id": child.attrib['id'],"comment":child.find("comment").text,"target": child.find('target').find('name').text,"scanner":child.find('scanner').find('name').text,"config":child.find("config").find('name').text, 'status':child.find("status").text, "progress": child.find('progress').text, "report": "None" if len([x.find('report') for x in child.findall('last_report') if int(child.find('report_count').text) > 0])==0 else [x.find('report').attrib['id'] for x in child.findall('last_report') if int(child.find('report_count').text)][0] }
                    for child in tasks]
+        print(tasks)
         return render(request, "gvm-ui/task.html",{'scanner_lists':scancofig,"scanners":scanners, "targets":targets, "tasks":tasks})
     def post(self, request):
+        
         name=request.POST.get("name", None)
         config_id= request.POST.get("config_id", None)
         target_id=request.POST.get("target_id", None)
@@ -151,6 +154,7 @@ class Task_View(View):
                     "config": task.find('config').find('name').text, "report": "None" if len([x.find('report') for x in task.findall('last_report') if int(task.find('report_count').text) > 0])==0 else [x.find('report').attrib['id'] for x in task.findall('last_report') if int(task.find('report_count').text)][0]}
                 body_html.update({"task": task_data})
         response = JsonResponse(body_html) 
+        
         return response
 
     def delete(self, request, id):
@@ -161,4 +165,33 @@ class Task_View(View):
         print(response)
         return response
 
-    
+class ActionTask_View(View):
+    def get(self, request, action, id):
+        if action =="status":
+            response = gvm.get_task(id=id)
+            response= ET.fromstring(response)
+            status = response.find('task').find("status").text
+            if status == 'Running':
+                progress = response.find('task').find("progress").text
+                return JsonResponse({"status":status, "progress":progress}, safe=False)
+            time.sleep(2)
+            return JsonResponse({"status":status}, safe=False)
+        
+    def post(self, request, action):
+        task_id=request.POST.get("task_id", None)
+        if action == "start":
+            body_html=gvm.start_task(id=task_id)
+            body_html=ET.fromstring(body_html)
+            response = {"status": body_html.attrib['status'], "status_text": body_html.attrib['status_text']}
+            return JsonResponse(response)
+        elif action=="stop":
+            response=gvm.stop_task(id=task_id)
+            return HttpResponse(response)
+        return HttpResponse(status=404)
+
+    def delete(self, request, action):
+        task_id=request.POST.get("task_id", None)
+        gvm.delete_task(task_id)
+        print(action)
+
+        return HttpResponse(status=200) 

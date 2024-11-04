@@ -33,11 +33,12 @@
 }
 .btn-danger {
     border-radius: 20px;
+    font-weight: 550;
 }
 
 .btn-success {
     border-radius: 20px;
-    border-radius: 20px;
+    font-weight: 550;
 }
 
 /* When the screen width is larger than 768px, change the layout */
@@ -58,3 +59,4 @@
         margin: 5px 0; /* Adjust the value as needed */
     }
 }
+
