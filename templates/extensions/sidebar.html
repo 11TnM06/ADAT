@@ -26,13 +26,8 @@
         </span>
         <span class="sidebar-dropdown-title">Task</span>
     </li>
-    <li class="sidebar-item" onclick="navigateTo('/gvm/report')" id="scan-report">
-        <span class="material-symbols-outlined md-18">
-            summarize
-        </span>
-        <span class="sidebar-dropdown-title">Report</span>
-    </li>
 </ul>
+
 <div class="row-1 sidebar-item" onclick="navigateTo('/exploit')" id="exploit"> 
     <span class="material-symbols-outlined">
         computer
@@ -41,13 +36,13 @@
 </div>
 <div class="row-1 sidebar-item" onclick="navigateTo('/sessions')" id="sessions">
     <span class="material-symbols-outlined">
-        data_thresholding
+        terminal
     </span>
     <span class="sidebar-title">Sessions</span>
 </div>
 <div class="row-1 sidebar-item" onclick="navigateTo('/metasploit_reports')" id="metasploit_reports">
-    <span class="material-symbols-outlined">
-        data_thresholding
+    <span class="material-symbols-outlined md-18">
+        summarize
     </span>
     <span class="sidebar-title">Metasploit Reports</span>
 </div>
@@ -67,8 +62,8 @@
             document.getElementById('scan-task').classList.add('sidebar-item-background-color');
             document.getElementById('scanDropdown').style.display = 'block';
         }
-        if (window.location.pathname === '/gvm/report/') {
-            document.getElementById('scan-report').classList.add('sidebar-item-background-color');
+        if (window.location.pathname.includes('/gvm/report/')) {
+            document.getElementById('scan-task').classList.add('sidebar-item-background-color');
             document.getElementById('scanDropdown').style.display = 'block';
         }
     };
