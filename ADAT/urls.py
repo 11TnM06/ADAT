@@ -22,6 +22,10 @@ urlpatterns = [
     path('accounts/', include('Users.urls'), name='Users'),
     path('admin/', admin.site.urls),
     path('home/', login_required(core.Home_View.as_view()), name='Core'),
-    path('core/', include('Core.urls'), name='Core'),
+    path('exploit/', include('Core.urls'), name='Core'),
     path('gvm/', include('GVM.urls'), name='GVM')
 ]
+
+admin.site.site_header = "ADAT Admin"
+admin.site.site_title = "ADAT Admin Portal"
+admin.site.index_title = "Welcome to ADAT Researcher Portal"

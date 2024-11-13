@@ -48,6 +48,11 @@
 </div>
 
 <script>
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) { // If the page is loaded from cache (like when using the back button)
+            window.location.reload(); // Refresh the page to reset it
+        }
+    });
     window.onload = function()  {
         if (window.location.pathname === '/home/') {
             document.getElementById('home').classList.add('sidebar-item-background-color');
@@ -65,6 +70,10 @@
         if (window.location.pathname.includes('/gvm/report/')) {
             document.getElementById('scan-task').classList.add('sidebar-item-background-color');
             document.getElementById('scanDropdown').style.display = 'block';
+        }
+        if (window.location.pathname === '/exploit/') {
+            document.getElementById('exploit').classList.add('sidebar-item-background-color');
+            dropdown.style.display = 'none';
         }
     };
     function navigateTo(path) {

@@ -48,8 +48,9 @@
                             <div class="col-1">{{ child.port }}</div>
                             <div class="col-3" style="word-wrap: break-word;">{{ child.description }}</div>
                             <div class="col-2">
-                                
-                                <button class="btn btn-exploit">Exploit</button>
+                                <a target="_blank" href="/exploit/auto/{{ child.id }} ">
+                                    <button data-id="{{ child.id }}" class="btn btn-exploit">Exploit</button>
+                                </a>
                                 
                             </div>
                         </div>
