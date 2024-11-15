@@ -17,6 +17,7 @@ from nltk.tokenize import word_tokenize
 import nltk
 from nltk.corpus import stopwords
 import re
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 msf_user = 'msf'
 msf_pass = 'msf'
@@ -66,7 +67,7 @@ class Auto_View(View):
         # search cve
         search_cve = []
         # print full et details
-        print(ET.tostring(et).decode("utf-8"))
+        # print(ET.tostring(et).decode("utf-8"))
         if cve is not None:
             search_cve = [child.attrib['id'] for child in cve if child.attrib['type'] == "cve"]
 
@@ -90,8 +91,9 @@ class Auto_View(View):
             search_term = extract_keywords(name)
         if description is not None:
             search_term += extract_keywords(description)
-        print("search team: ", search_term)
-
+        print("search team before: ", search_term)
+        search_term = set(search_term)
+        print("search team after: ", search_term)
         search_results = []
         for child in search_term:
             results = client.call('module.search', [child])
@@ -99,9 +101,11 @@ class Auto_View(View):
             search_results.extend(results)
         counter = Counter(list(search_results))
         search_results = sorted(counter.items(), key=lambda x: x[1], reverse=True)
+        #print(search_results)
         results = []
         for child in search_results[0:100]:
             if child[1] == search_results[0][1]:
+                #print(child)
                 evaluated_child = eval(child[0])
                 results.append(evaluated_child)
         exploits = [{"name": child['name'] + " : " + child["fullname"], "module": child["fullname"]} for child in
@@ -115,10 +119,18 @@ class Auto_View(View):
         if "/" not in targetURI:
             targetURI = ""
         print(targetURI)
-        exploits.insert(0, "")
+        #exploits.insert(0, "")
         print("exploits: ", exploits)
         print(host)
         print("targetURI: ", targetURI)
-        return render(request, "dashboard/home.html",
+        return render(request, "core/auto.html",
                       {"username": username, "exploits": exploits, 'host': host, 'name': name, "port": port,
                        "targetURI": targetURI})
+
+def analyze_with_tfidf(text, top_n=5):
+    stop_words = set(stopwords.words('english'))
+    tfidf = TfidfVectorizer(max_features=top_n, stop_words=stop_words)
+    tfidf_matrix = tfidf.fit_transform([text])
+    keywords = tfidf.get_feature_names_out()
+    print("AI Keywords: ", keywords)
+    return keywords

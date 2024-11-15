@@ -77,6 +77,7 @@ class Report_View(View):
         for child in response:
             all+=1
             text = child.find('threat').text
+            print(child.find('name').text)
             if text=="High":
                 high+=1
             elif text == "Medium":

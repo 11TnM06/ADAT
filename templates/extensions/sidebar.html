@@ -71,7 +71,7 @@
             document.getElementById('scan-task').classList.add('sidebar-item-background-color');
             document.getElementById('scanDropdown').style.display = 'block';
         }
-        if (window.location.pathname === '/exploit/') {
+        if (window.location.pathname.includes('/exploit/')) {
             document.getElementById('exploit').classList.add('sidebar-item-background-color');
             dropdown.style.display = 'none';
         }
