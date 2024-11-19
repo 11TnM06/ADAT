@@ -119,7 +119,7 @@ if __name__ == "__main__":
     # Tìm kiếm module phù hợp
     mapping_results = map_vulnerabilities_to_modules(gvm_vulnerabilities, metasploit_modules, bm25_corpus)
 
-    # In kết quả
+    # In kết quả tìm kiếm
     for result in mapping_results:
         print(f"Vulnerability: {result['vulnerability']}")
         print(f"Matched Module: {result['matched_module']}")
