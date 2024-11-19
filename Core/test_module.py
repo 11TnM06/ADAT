@@ -3,15 +3,53 @@ from pymetasploit3.msfrpc import MsfRpcClient
 import nltk
 from nltk.tokenize import word_tokenize
 import json
+from tqdm import tqdm
 # Khởi tạo Metasploit RPC client
 client = MsfRpcClient('msf', port=55552, username='msf', server='127.0.0.1')
+
+
+def get_all_modules():
+    # Fetch exploit and auxiliary modules
+    exploits = client.modules.exploits
+    auxiliaries = client.modules.auxiliary
+
+    # Create a list to store module information with tags
+    all_modules = []
+
+    # Add exploit modules with the 'type' tag
+    for exploit in tqdm(exploits, desc="Find exploit modules"):
+        all_modules.append({
+            "name": exploit,
+            "type": "exploit"
+        })
+
+    # Add auxiliary modules with the 'type' tag
+    for auxiliary in tqdm(auxiliaries, desc="Find auxiliary modules"):
+        all_modules.append({
+            "name": auxiliary,
+            "type": "auxiliary"
+        })
+
+    # Save to a JSON file
+    with open('modules.json', 'w') as file:
+        json.dump(all_modules, file, indent=4)  # Use indent=4 for readable JSON output
+
+    print(f"Total modules saved: {len(all_modules)}")
+    return
 
 def create_module_attrib():
     with open('modules.json', 'r') as file:
         data = json.load(file)
     module_info = []
-    for module in data["modules"]:
-        info = client.modules.use('exploit', module)
+    for module in tqdm(data, desc="Add module attributes"):
+        try:
+            if module['type'] == 'exploit':
+                info = client.modules.use('exploit', module['name'])
+            else:
+                info = client.modules.use('auxiliary', module['name'])
+        except Exception as e:
+            print(f"Error processing module {module}: {e}")
+            continue
         if 'RPORT' in info.options:
             rport = str(info['RPORT'])
         else:
@@ -38,7 +76,7 @@ def prepare_bm25_data(modules):
     corpus = []
     for module in modules:
         # Gộp tên và mô tả để làm tài liệu cho BM25
-        text = f"{module['name']} {module['description']} {module['rport']}"
+        text = f"{module['name']} {module['description']}"
         corpus.append(word_tokenize(text.lower()))
     return corpus
 
@@ -64,13 +102,14 @@ def map_vulnerabilities_to_modules(vulnerabilities, modules, bm25_corpus):
 
 # Main
 if __name__ == "__main__":
+    get_all_modules()
     # Danh sách lỗ hổng từ GVM
-    #create_module_attrib()
+    create_module_attrib()
     gvm_vulnerabilities = [
-        "The rexec service is running on port 512",
-        "rlogin Passwordless Login on port 513",
-        "TWiki XSS and Command Execution Vulnerabilities on port 80",
-        "vsftpd Compromised Source Packages Backdoor Vulnerability on port 21",
+        "The rexec service is running",
+        "rlogin Passwordless Login",
+        "TWiki XSS and Command Execution Vulnerabilities",
+        "vsftpd Compromised Source Packages Backdoor Vulnerability",
     ]
 
     # Lấy module Metasploit và chuẩn bị dữ liệu
@@ -86,3 +125,4 @@ if __name__ == "__main__":
         print(f"Matched Module: {result['matched_module']}")
         print(f"Matched RPORT: {result['rport']}")
         print(f"Score: {result['score']}\n")
+
