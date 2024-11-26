@@ -19,6 +19,8 @@ from nltk.corpus import stopwords
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from .modules_detection.modules_detection import ModulesDetection
+from .modules_detection.metasploit_bm25 import MetasploitBM25
 msf_user = 'msf'
 msf_pass = 'msf'
 msf_host = '127.0.0.1'
@@ -57,71 +59,45 @@ class Auto_View(View):
         host = request.get_host()
         username = request.user.username
 
-        vuln = gvm.get_result(id=id1)
-        et = ET.fromstring(vuln).find("result")
-        name = et.find('name').text
-        description = et.find('description').text
-        port = et.find('port').text.split('/')[0]
-        cve = None if et.find('nvt').find('refs') is None else et.find('nvt').find("refs").findall('ref')
+        # init module detection
+        modules_detection = ModulesDetection(client)
+
+        # get vulnerability details
+        vuln_details = modules_detection.get_vulnerability_details(id1)
+        name, description, port, cve, host, et = vuln_details.values()
 
         # search cve
-        search_cve = []
-        # print full et details
-        # print(ET.tostring(et).decode("utf-8"))
-        if cve is not None:
-            search_cve = [child.attrib['id'] for child in cve if child.attrib['type'] == "cve"]
+        search_cve = modules_detection.extract_cve_ids(cve)
 
-        cve_results = []
-        for child in search_cve:
-            results = client.call('module.search', [child])
-            results = [str(child) for child in results]
-            cve_results.extend(results)
-        counter = Counter(list(cve_results))
-        cve_result = sorted(counter.items(), key=lambda x: x[1], reverse=True)
-        cve_result = [eval(child[0]) for child in cve_result[0:5] if child[1] == cve_result[0][1]]
-        cve_result = [{"name": child['name'] + " : " + child["fullname"], "module": child["fullname"]} for child in
-                      cve_result][0:5]
+        top_cve_modules = modules_detection.search_cves(search_cve)
+        cve_result = modules_detection.format_module_data(top_cve_modules)[:5]
+
         print("Core\\views\Auto\cve_result: ", end=" ")
-
         print(cve_result, end='\n\n')
 
-        # search exploit
-        search_term = []
-        if name is not None:
-            search_term = extract_keywords(name)
-        if description is not None:
-            search_term += extract_keywords(description)
-        print("search team before: ", search_term)
-        search_term = set(search_term)
-        print("search team after: ", search_term)
-        search_results = []
-        for child in search_term:
-            results = client.call('module.search', [child])
-            results = [str(child) for child in results]
-            search_results.extend(results)
-        counter = Counter(list(search_results))
-        search_results = sorted(counter.items(), key=lambda x: x[1], reverse=True)
-        #print(search_results)
-        results = []
-        for child in search_results[0:100]:
-            if child[1] == search_results[0][1]:
-                #print(child)
-                evaluated_child = eval(child[0])
-                results.append(evaluated_child)
-        exploits = [{"name": child['name'] + " : " + child["fullname"], "module": child["fullname"]} for child in
-                    results][0:1]
-        host = et.find('host').text
-        targetURI = ""
-        try:
-            targetURI = re.split(rf"{host}|port:", et.find('description').text)[-1].strip()
-        except:
-            pass
-        if "/" not in targetURI:
-            targetURI = ""
+        # search exploit modules by base method
+        exploits = modules_detection.base_search_exploits(name, description)
+
+        # search exploit modules by BM25 method
+        metasploitBM25 = MetasploitBM25(client)
+        metasploit_modules = metasploitBM25.get_metasploit_modules()
+        gvm_vulnerabilities = [name]
+        bm25_corpus = metasploitBM25.prepare_bm25_data(metasploit_modules)
+        processed_vulnerabilities = metasploitBM25.process_gvm_vulnerabilities(gvm_vulnerabilities)
+        mapping_results = metasploitBM25.map_vulnerabilities_to_modules(
+            gvm_vulnerabilities, metasploit_modules, bm25_corpus
+        )
+
+        print(f"Vulnerability: {mapping_results[0]['vulnerability']}")
+        print(f"Matched Module: {mapping_results[0]['matched_module']}")
+        print(f"Matched RPORT: {mapping_results[0]['rport']}")
+        print(f"Score: {mapping_results[0]['score']:.2f}\n")
+
+        # extract targetURI
+        targetURI = modules_detection.extract_target_uri(et.find('description').text, et.find('host').text)
         print(targetURI)
         #exploits.insert(0, "")
         print("exploits: ", exploits)
-        print(host)
         print("targetURI: ", targetURI)
         return render(request, "core/auto.html",
                       {"username": username, "exploits": exploits, 'host': host, 'name': name, "port": port,

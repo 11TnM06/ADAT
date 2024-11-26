@@ -74,7 +74,7 @@ def get_metasploit_modules():
 # Chuẩn bị dữ liệu cho BM25
 def prepare_bm25_data(modules):
     corpus = []
-    for module in modules:
+    for module in tqdm(modules, desc="Generate BM25 corpus"):
         # Gộp tên và mô tả để làm tài liệu cho BM25
         text = f"{module['name']} {module['description']}"
         corpus.append(word_tokenize(text.lower()))
@@ -100,16 +100,42 @@ def map_vulnerabilities_to_modules(vulnerabilities, modules, bm25_corpus):
         })
     return results
 
-# Main
-if __name__ == "__main__":
-    get_all_modules()
-    # Danh sách lỗ hổng từ GVM
-    create_module_attrib()
-    gvm_vulnerabilities = [
+# Tìm ten va description từ GVM
+def get_vulnerabilities():
+    return [
         "The rexec service is running",
         "rlogin Passwordless Login",
         "TWiki XSS and Command Execution Vulnerabilities",
         "vsftpd Compromised Source Packages Backdoor Vulnerability",
+    ]
+# Main
+if __name__ == "__main__":
+    #get_all_modules()
+    # Danh sách lỗ hổng từ GVM
+    #create_module_attrib()
+    gvm_vulnerabilities = [
+        "Possible Backdoor: Ingreslock",
+        "The rexec service is running",
+        "rlogin Passwordless Login",
+        "TWiki XSS and Command Execution Vulnerabilities",
+        "Distributed Ruby (dRuby/DRb) Multiple Remote Code Execution Vulnerabilities",
+        "vsftpd Compromised Source Packages Backdoor Vulnerability",
+        "Operating System (OS) End of Life (EOL) Detection",
+        "MySQL / MariaDB Default Credentials (MySQL Protocol)",
+        "vsftpd Compromised Source Packages Backdoor Vulnerability",
+        "Apache Tomcat AJP RCE Vulnerability (Ghostcat)",
+        "DistCC RCE Vulnerability (CVE-2004-2687)",
+        "VNC Brute Force Login",
+        "PostgreSQL Default Credentials (PostgreSQL Protocol)",
+        "UnrealIRCd Authentication Spoofing Vulnerability",
+        "Java RMI Server Insecure Default Configuration RCE Vulnerability",
+        "rsh Unencrypted Cleartext Login",
+        "PHP-CGI-based setups vulnerability when parsing query string parameters from php files."
+        "The rlogin service is running",
+        "Test HTTP dangerous methods",
+        "FTP Brute Force Logins Reporting",
+        "UnrealIRCd Backdoor",
+        "SSL/TLS: OpenSSL CCS Man in the Middle Security Bypass Vulnerability"
     ]
 
     # Lấy module Metasploit và chuẩn bị dữ liệu
