@@ -91,7 +91,6 @@ class ModulesDetection:
                 if result[1] == max_score:
                     evaluated_result = eval(result[0])
                     exploits.append(evaluated_result)
-
         # Format exploits
         formatted_exploits = [
             {"name": f"{item['name']} : {item['fullname']}", "module": item["fullname"]}
