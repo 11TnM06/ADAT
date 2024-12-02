@@ -1,0 +1,347 @@
+[
+    {
+        "Name": "Possible Backdoor: Ingreslock",
+        "Port": "1524",
+        "Module": "No module found"
+    },
+    {
+        "Name": "The rexec service is running",
+        "Port": "512",
+        "Module": "auxiliary/scanner/rservices/rexec_login"
+    },
+    {
+        "Name": "rlogin Passwordless Login",
+        "Port": "513",
+        "Module": "auxiliary/scanner/rservices/rlogin_login"
+    },
+    {
+        "Name": "TWiki XSS and Command Execution Vulnerabilities",
+        "Port": "80",
+        "Module": "exploit/php/webapps/32646.txt"
+    },
+    {
+        "Name": "Distributed Ruby (dRuby/DRb) Multiple Remote Code Execution Vulnerabilities",
+        "Port": "8787",
+        "Module": "exploit/linux/remote/17058"
+    },
+    {
+        "Name": "Operating System (OS) End of Life (EOL) Detection",
+        "Port": "general",
+        "Module": "No module found"
+    },
+    {
+        "Name": "MySQL / MariaDB Default Credentials (MySQL Protocol)",
+        "Port": "3306",
+        "Module": "auxiliary/scanner/mysql/mysql_login"
+    },
+    {
+        "Name": "vsftpd Compromised Source Packages Backdoor Vulnerability",
+        "Port": "6200",
+        "Module": "exploit/unix/ftp/vsftpd_234_backdoor"
+    },
+    {
+        "Name": "vsftpd Compromised Source Packages Backdoor Vulnerability",
+        "Port": "21",
+        "Module": "exploit/unix/ftp/vsftpd_234_backdoor"
+    },
+    {
+        "Name": "Apache Tomcat AJP RCE Vulnerability (Ghostcat)",
+        "Port": "8009",
+        "Module": "auxiliary/admin/http/tomcat_ghostcat"
+    },
+    {
+        "Name": "DistCC RCE Vulnerability (CVE-2004-2687)",
+        "Port": "3632",
+        "Module": "exploit/unix/misc/distcc_exec"
+    },
+    {
+        "Name": "VNC Brute Force Login",
+        "Port": "5900",
+        "Module": "auxiliary/scanner/vnc/vnc_login"
+    },
+    {
+        "Name": "PostgreSQL Default Credentials (PostgreSQL Protocol)",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/postgres/postgres_login"
+    },
+    {
+        "Name": "UnrealIRCd Authentication Spoofing Vulnerability",
+        "Port": "6697",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Java RMI Server Insecure Default Configuration RCE Vulnerability",
+        "Port": "1099",
+        "Module": "exploit/multi/misc/java_rmi_server"
+    },
+    {
+        "Name": "rsh Unencrypted Cleartext Login",
+        "Port": "514",
+        "Module": "auxiliary/scanner/rservices/rsh_login"
+    },
+    {
+        "Name": "PHP-CGI-based setups vulnerability when parsing query string parameters from php files",
+        "Port": "80",
+        "Module": "exploit/multi/http/php_cgi_arg_injection"
+    },
+    {
+        "Name": "The rlogin service is running",
+        "Port": "513",
+        "Module": "auxiliary/scanner/rservices/rlogin_login"
+    },
+    {
+        "Name": "Test HTTP dangerous methods",
+        "Port": "80",
+        "Module": "auxiliary/scanner/http/options"
+    },
+    {
+        "Name": "FTP Brute Force Logins Reporting",
+        "Port": "21",
+        "Module": "auxiliary/scanner/ftp/ftp_login"
+    },
+    {
+        "Name": "FTP Brute Force Logins Reporting",
+        "Port": "2121",
+        "Module": "auxiliary/scanner/ftp/ftp_login"
+    },
+    {
+        "Name": "UnrealIRCd Backdoor",
+        "Port": "6697",
+        "Module": "exploit/unix/irc/unreal_ircd_3281_backdoor"
+    },
+    {
+        "Name": "SSL/TLS: OpenSSL CCS Man in the Middle Security Bypass Vulnerability",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/openssl_ccs"
+    },
+    {
+        "Name": "Multiple Vendors STARTTLS Implementation Plaintext Arbitrary Command Injection Vulnerability",
+        "Port": "25",
+        "Module": "No module found"
+    },
+    {
+        "Name": "TWiki Cross-Site Request Forgery Vulnerability (Sep 2010)",
+        "Port": "80",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Anonymous FTP Login Reporting",
+        "Port": "21",
+        "Module": "auxiliary/scanner/ftp/anonymous"
+    },
+    {
+        "Name": "jQuery < 1.9.0 XSS Vulnerability",
+        "Port": "80",
+        "Module": "No module found"
+    },
+    {
+        "Name": "TWiki < 6.1.0 XSS Vulnerability",
+        "Port": "80",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Samba MS-RPC Remote Shell Command Execution Vulnerability - Active Check",
+        "Port": "445",
+        "Module": "exploit/multi/samba/usermap_script"
+    },
+    {
+        "Name": "TWiki Cross-Site Request Forgery Vulnerability",
+        "Port": "80",
+        "Module": "No module found"
+    },
+    {
+        "Name": "SSL/TLS: Deprecated SSLv2 and SSLv3 Protocol Detection",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Deprecated SSLv2 and SSLv3 Protocol Detection",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Report Weak Cipher Suites",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "HTTP Debugging Methods (TRACE/TRACK) Enabled",
+        "Port": "80",
+        "Module": "auxiliary/scanner/http/trace"
+    },
+    {
+        "Name": "Weak Key Exchange (KEX) Algorithm(s) Supported (SSH)",
+        "Port": "22",
+        "Module": "auxiliary/scanner/ssh/ssh_version"
+    },
+    {
+        "Name": "SSL/TLS: Server Certificate / Certificate in Chain with RSA keys less than 2048 bits",
+        "Port": "25",
+        "Module": "No module found"
+    },
+    {
+        "Name": "SSL/TLS: Server Certificate / Certificate in Chain with RSA keys less than 2048 bits",
+        "Port": "5432",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Weak Host Key Algorithm(s) (SSH)",
+        "Port": "22",
+        "Module": "auxiliary/scanner/ssh/ssh_version"
+    },
+    {
+        "Name": "phpinfo() Output Reporting (HTTP)",
+        "Port": "80",
+        "Module": "exploit/php/webapps/4861.txt"
+    },
+    {
+        "Name": "SSL/TLS: Renegotiation DoS Vulnerability (CVE-2011-1473, CVE-2011-5094)",
+        "Port": "5432",
+        "Module": "No module found"
+    },
+    {
+        "Name": "/doc directory browsable",
+        "Port": "80",
+        "Module": "exploit/linux/remote/19253.txt"
+    },
+    {
+        "Name": "SSL/TLS: Certificate Expired",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "Check if Mailserver answer to VRFY and EXPN requests",
+        "Port": "25",
+        "Module": "auxiliary/scanner/smtp/smtp_enum"
+    },
+    {
+        "Name": "QWikiwiki directory traversal vulnerability",
+        "Port": "80",
+        "Module": "exploit/php/webapps/737.txt"
+    },
+    {
+        "Name": "SSL/TLS: Certificate Expired",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Renegotiation DoS Vulnerability (CVE-2011-1473, CVE-2011-5094)",
+        "Port": "25",
+        "Module": "No module found"
+    },
+    {
+        "Name": "awiki <= 20100125 Multiple LFI Vulnerabilities - Active Check",
+        "Port": "80",
+        "Module": "exploit/php/webapps/36047.txt"
+    },
+    {
+        "Name": "Cleartext Transmission of Sensitive Information via HTTP",
+        "Port": "80",
+        "Module": "No module found"
+    },
+    {
+        "Name": "FTP Unencrypted Cleartext Login",
+        "Port": "2121",
+        "Module": "No module found"
+    },
+    {
+        "Name": "VNC Server Unencrypted Data Transmission",
+        "Port": "5900",
+        "Module": "No module found"
+    },
+    {
+        "Name": "FTP Unencrypted Cleartext Login",
+        "Port": "21",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Telnet Unencrypted Cleartext Login",
+        "Port": "23",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Apache HTTP Server 'httpOnly' Cookie Information Disclosure Vulnerability",
+        "Port": "80",
+        "Module": "multiple/remote/18442.html"
+    },
+    {
+        "Name": "SSL/TLS: Deprecated TLSv1.0 and TLSv1.1 Protocol Detection",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Deprecated TLSv1.0 and TLSv1.1 Protocol Detection",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "phpMyAdmin 'error.php' Cross Site Scripting Vulnerability",
+        "Port": "80",
+        "Module": "php/webapps/15699.txt"
+    },
+    {
+        "Name": "jQuery < 1.6.3 XSS Vulnerability",
+        "Port": "80",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Weak Encryption Algorithm(s) Supported (SSH)",
+        "Port": "22",
+        "Module": "auxiliary/scanner/ssh/ssh_version"
+    },
+    {
+        "Name": "SSL/TLS: RSA Temporary Key Handling 'RSA_EXPORT' Downgrade Issue (FREAK)",
+        "Port": "25",
+        "Module": "No module found"
+    },
+    {
+        "Name": "SSL/TLS: Certificate Signed Using A Weak Signature Algorithm",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Diffie-Hellman Key Exchange Insufficient DH Group Strength Vulnerability",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Diffie-Hellman Key Exchange Insufficient DH Group Strength Vulnerability",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: Certificate Signed Using A Weak Signature Algorithm",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: 'DHE_EXPORT' Man in the Middle Security Bypass Vulnerability (LogJam)",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: SSLv3 Protocol CBC Cipher Suites Information Disclosure Vulnerability (POODLE)",
+        "Port": "5432",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "SSL/TLS: SSLv3 Protocol CBC Cipher Suites Information Disclosure Vulnerability (POODLE)",
+        "Port": "25",
+        "Module": "auxiliary/scanner/ssl/ssl_version"
+    },
+    {
+        "Name": "TCP Timestamps Information Disclosure",
+        "Port": "general",
+        "Module": "No module found"
+    },
+    {
+        "Name": "Weak MAC Algorithm(s) Supported (SSH)",
+        "Port": "22",
+        "Module": "auxiliary/scanner/ssh/ssh_version"
+    },
+    {
+        "Name": "ICMP Timestamp Reply Information Disclosure",
+        "Port": "general",
+        "Module": "No module found"
+    }
+]
