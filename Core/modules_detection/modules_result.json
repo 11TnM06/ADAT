@@ -80,7 +80,7 @@
         "Module": "auxiliary/scanner/rservices/rsh_login"
     },
     {
-        "Name": "PHP-CGI-based setups vulnerability when parsing query string parameters from php files",
+        "Name": "PHP-CGI-based setups vulnerability when parsing query string parameters from php files.",
         "Port": "80",
         "Module": "exploit/multi/http/php_cgi_arg_injection"
     },
