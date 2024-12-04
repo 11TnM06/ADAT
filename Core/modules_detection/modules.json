@@ -196,6 +196,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/acronis_cyber_infra_cve_2023_45249",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/advantech_switch_bash_env_exec",
         "type": "exploit"
     },
@@ -232,6 +236,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/apache_hugegraph_gremlin_rce",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/apache_nifi_h2_rce",
         "type": "exploit"
     },
@@ -241,6 +249,10 @@
     },
     {
         "name": "linux/http/apache_ofbiz_deserialization_soap",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/apache_solr_backup_restore",
         "type": "exploit"
     },
     {
@@ -317,6 +329,10 @@
     },
     {
         "name": "linux/http/chamilo_unauth_rce_cve_2023_34960",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/chaos_rat_xss_to_rce",
         "type": "exploit"
     },
     {
@@ -772,6 +788,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/magento_xxe_to_glibc_buf_overflow",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/magnusbilling_unauth_rce_cve_2023_30258",
         "type": "exploit"
     },
@@ -888,6 +908,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/netis_unauth_rce_cve_2024_22729",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/netsweeper_webadmin_unixlogin",
         "type": "exploit"
     },
@@ -913,6 +937,10 @@
     },
     {
         "name": "linux/http/openfiler_networkcard_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/openmetadata_auth_bypass_rce",
         "type": "exploit"
     },
     {
@@ -960,6 +988,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/panos_telemetry_cmd_exec",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/peercast_url",
         "type": "exploit"
     },
@@ -992,6 +1024,14 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/progress_flowmon_unauth_cmd_injection",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/progress_kemp_loadmaster_unauth_cmd_injection",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/pulse_secure_cmd_exec",
         "type": "exploit"
     },
@@ -1021,6 +1061,14 @@
     },
     {
         "name": "linux/http/rancher_server",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/ray_agent_job_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/ray_cpu_profile_cmd_injection_cve_2023_6019",
         "type": "exploit"
     },
     {
@@ -1172,6 +1220,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/traccar_rce_upload",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/trend_micro_imsva_exec",
         "type": "exploit"
     },
@@ -1268,6 +1320,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/http/watchguard_firebox_unauth_rce_cve_2022_26318",
+        "type": "exploit"
+    },
+    {
         "name": "linux/http/wd_mycloud_multiupload_upload",
         "type": "exploit"
     },
@@ -1341,6 +1397,10 @@
     },
     {
         "name": "linux/http/zyxel_lfi_unauth_ssh_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/http/zyxel_parse_config_rce",
         "type": "exploit"
     },
     {
@@ -1448,6 +1508,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/local/cve_2023_0386_overlayfs_priv_esc",
+        "type": "exploit"
+    },
+    {
         "name": "linux/local/desktop_privilege_escalation",
         "type": "exploit"
     },
@@ -1465,6 +1529,10 @@
     },
     {
         "name": "linux/local/docker_privileged_container_escape",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/local/docker_privileged_container_kernel_escape",
         "type": "exploit"
     },
     {
@@ -1524,6 +1592,10 @@
         "type": "exploit"
     },
     {
+        "name": "linux/local/motd_persistence",
+        "type": "exploit"
+    },
+    {
         "name": "linux/local/nested_namespace_idmap_limit_priv_esc",
         "type": "exploit"
     },
@@ -1565,6 +1637,14 @@
     },
     {
         "name": "linux/local/polkit_dbus_auth_bypass",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/local/progress_flowmon_sudo_privesc_2024",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/local/progress_kemp_loadmaster_sudo_privesc_2024",
         "type": "exploit"
     },
     {
@@ -1897,6 +1977,10 @@
     },
     {
         "name": "linux/redis/redis_replication_cmd_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "linux/remote/17058",
         "type": "exploit"
     },
     {
@@ -2256,6 +2340,14 @@
         "type": "exploit"
     },
     {
+        "name": "multi/fileformat/ghostscript_format_string_cve_2024_29510",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/fileformat/gitlens_local_config_exec",
+        "type": "exploit"
+    },
+    {
         "name": "multi/fileformat/js_unpacker_eval_injection",
         "type": "exploit"
     },
@@ -2285,6 +2377,10 @@
     },
     {
         "name": "multi/fileformat/swagger_param_inject",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/fileformat/visual_studio_vsix_exec",
         "type": "exploit"
     },
     {
@@ -2368,6 +2464,10 @@
         "type": "exploit"
     },
     {
+        "name": "multi/http/apache_ofbiz_forgot_password_directory_traversal",
+        "type": "exploit"
+    },
+    {
         "name": "multi/http/apache_rocketmq_update_config",
         "type": "exploit"
     },
@@ -2389,6 +2489,10 @@
     },
     {
         "name": "multi/http/atlassian_confluence_rce_cve_2023_22527",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/atlassian_confluence_rce_cve_2024_21683",
         "type": "exploit"
     },
     {
@@ -2416,6 +2520,10 @@
         "type": "exploit"
     },
     {
+        "name": "multi/http/avideo_wwbnindex_unauth_rce",
+        "type": "exploit"
+    },
+    {
         "name": "multi/http/axis2_deployer",
         "type": "exploit"
     },
@@ -2437,6 +2545,10 @@
     },
     {
         "name": "multi/http/builderengine_upload_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/cacti_package_import_rce",
         "type": "exploit"
     },
     {
@@ -2496,6 +2608,10 @@
         "type": "exploit"
     },
     {
+        "name": "multi/http/crushftp_rce_cve_2023_43177",
+        "type": "exploit"
+    },
+    {
         "name": "multi/http/cups_bash_env_exec",
         "type": "exploit"
     },
@@ -2552,11 +2668,23 @@
         "type": "exploit"
     },
     {
+        "name": "multi/http/gambio_unauth_rce_cve_2024_23759",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/geoserver_unauth_rce_cve_2024_36401",
+        "type": "exploit"
+    },
+    {
         "name": "multi/http/gestioip_exec",
         "type": "exploit"
     },
     {
         "name": "multi/http/getsimplecms_unauth_code_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/gibbon_auth_rce_cve_2024_24725",
         "type": "exploit"
     },
     {
@@ -2912,10 +3040,6 @@
         "type": "exploit"
     },
     {
-        "name": "multi/http/openmediavault_cmd_exec",
-        "type": "exploit"
-    },
-    {
         "name": "multi/http/openmrs_deserialization",
         "type": "exploit"
     },
@@ -2961,6 +3085,10 @@
     },
     {
         "name": "multi/http/pentaho_business_server_authbypass_and_ssti",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/pgadmin_session_deserialization",
         "type": "exploit"
     },
     {
@@ -3153,6 +3281,22 @@
     },
     {
         "name": "multi/http/sonicwall_shell_injection_cve_2023_34124",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/spip_bigup_unauth_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/spip_connect_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/spip_porte_plume_previsu_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/spip_rce_form",
         "type": "exploit"
     },
     {
@@ -3388,6 +3532,10 @@
         "type": "exploit"
     },
     {
+        "name": "multi/http/wp_automatic_sqli_to_rce",
+        "type": "exploit"
+    },
+    {
         "name": "multi/http/wp_backup_migration_php_filter",
         "type": "exploit"
     },
@@ -3413,6 +3561,18 @@
     },
     {
         "name": "multi/http/wp_file_manager_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/wp_givewp_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/wp_hash_form_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/http/wp_litespeed_cookie_theft",
         "type": "exploit"
     },
     {
@@ -3536,6 +3696,10 @@
         "type": "exploit"
     },
     {
+        "name": "multi/misc/calibre_exec",
+        "type": "exploit"
+    },
+    {
         "name": "multi/misc/claymore_dual_miner_remote_manager_rce",
         "type": "exploit"
     },
@@ -3641,6 +3805,10 @@
     },
     {
         "name": "multi/misc/veritas_netbackup_cmdexec",
+        "type": "exploit"
+    },
+    {
+        "name": "multi/misc/vscode_ipynb_remote_dev_exec",
         "type": "exploit"
     },
     {
@@ -4316,6 +4484,10 @@
         "type": "exploit"
     },
     {
+        "name": "unix/webapp/byob_unauth_rce",
+        "type": "exploit"
+    },
+    {
         "name": "unix/webapp/cacti_graphimage_exec",
         "type": "exploit"
     },
@@ -4520,6 +4692,10 @@
         "type": "exploit"
     },
     {
+        "name": "unix/webapp/openmediavault_auth_cron_rce",
+        "type": "exploit"
+    },
+    {
         "name": "unix/webapp/openmediavault_rpc_rce",
         "type": "exploit"
     },
@@ -4632,14 +4808,6 @@
         "type": "exploit"
     },
     {
-        "name": "unix/webapp/spip_connect_exec",
-        "type": "exploit"
-    },
-    {
-        "name": "unix/webapp/spip_rce_form",
-        "type": "exploit"
-    },
-    {
         "name": "unix/webapp/squash_yaml_exec",
         "type": "exploit"
     },
@@ -4705,6 +4873,10 @@
     },
     {
         "name": "unix/webapp/vbulletin_vote_sqli_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "unix/webapp/vicidial_agent_authenticated_rce",
         "type": "exploit"
     },
     {
@@ -7344,6 +7516,10 @@
         "type": "exploit"
     },
     {
+        "name": "windows/http/forticlient_ems_fctid_sqli",
+        "type": "exploit"
+    },
+    {
         "name": "windows/http/fortilogger_arbitrary_fileupload",
         "type": "exploit"
     },
@@ -7544,6 +7720,10 @@
         "type": "exploit"
     },
     {
+        "name": "windows/http/ivanti_epm_recordgoodapp_sqli_rce",
+        "type": "exploit"
+    },
+    {
         "name": "windows/http/jira_collector_traversal",
         "type": "exploit"
     },
@@ -7573,6 +7753,10 @@
     },
     {
         "name": "windows/http/lg_simple_editor_rce",
+        "type": "exploit"
+    },
+    {
+        "name": "windows/http/lg_simple_editor_rce_uploadvideo",
         "type": "exploit"
     },
     {
@@ -7672,6 +7856,10 @@
         "type": "exploit"
     },
     {
+        "name": "windows/http/northstar_c2_xss_to_agent_rce",
+        "type": "exploit"
+    },
+    {
         "name": "windows/http/novell_imanager_upload",
         "type": "exploit"
     },
@@ -7732,7 +7920,15 @@
         "type": "exploit"
     },
     {
+        "name": "windows/http/pgadmin_binary_path_api",
+        "type": "exploit"
+    },
+    {
         "name": "windows/http/php_apache_request_headers_bof",
+        "type": "exploit"
+    },
+    {
+        "name": "windows/http/php_cgi_arg_injection_rce_cve_2024_4577",
         "type": "exploit"
     },
     {
@@ -7765,6 +7961,10 @@
     },
     {
         "name": "windows/http/rejetto_hfs_exec",
+        "type": "exploit"
+    },
+    {
+        "name": "windows/http/rejetto_hfs_rce_cve_2024_23692",
         "type": "exploit"
     },
     {
@@ -7836,6 +8036,10 @@
         "type": "exploit"
     },
     {
+        "name": "windows/http/softing_sis_rce",
+        "type": "exploit"
+    },
+    {
         "name": "windows/http/solarwinds_fsm_userlogin",
         "type": "exploit"
     },
@@ -7873,6 +8077,10 @@
     },
     {
         "name": "windows/http/telerik_rau_deserialization",
+        "type": "exploit"
+    },
+    {
+        "name": "windows/http/telerik_report_server_deserialization",
         "type": "exploit"
     },
     {
@@ -8273,6 +8481,10 @@
     },
     {
         "name": "windows/local/cve_2023_28252_clfs_driver",
+        "type": "exploit"
+    },
+    {
+        "name": "windows/local/cve_2024_30088_authz_basep",
         "type": "exploit"
     },
     {
@@ -9240,6 +9452,10 @@
         "type": "exploit"
     },
     {
+        "name": "windows/scada/diaenergie_sqli",
+        "type": "exploit"
+    },
+    {
         "name": "windows/scada/factorylink_csservice",
         "type": "exploit"
     },
@@ -9281,6 +9497,10 @@
     },
     {
         "name": "windows/scada/moxa_mdmtool",
+        "type": "exploit"
+    },
+    {
+        "name": "windows/scada/mypro_cmdexe",
         "type": "exploit"
     },
     {
@@ -9760,6 +9980,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "admin/http/cisco_ssm_onprem_account",
+        "type": "auxiliary"
+    },
+    {
         "name": "admin/http/cnpilot_r_cmd_exec",
         "type": "auxiliary"
     },
@@ -9788,6 +10012,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "admin/http/fortra_filecatalyst_workflow_sqli",
+        "type": "auxiliary"
+    },
+    {
         "name": "admin/http/gitlab_password_reset_account_takeover",
         "type": "auxiliary"
     },
@@ -9812,6 +10040,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "admin/http/idsecure_auth_bypass",
+        "type": "auxiliary"
+    },
+    {
         "name": "admin/http/iis_auth_bypass",
         "type": "auxiliary"
     },
@@ -9821,6 +10053,10 @@
     },
     {
         "name": "admin/http/iomega_storcenterpro_sessionid",
+        "type": "auxiliary"
+    },
+    {
+        "name": "admin/http/ivanti_vtm_admin",
         "type": "auxiliary"
     },
     {
@@ -10028,6 +10264,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "admin/http/whatsup_gold_sqli",
+        "type": "auxiliary"
+    },
+    {
         "name": "admin/http/wp_automatic_plugin_privesc",
         "type": "auxiliary"
     },
@@ -10093,6 +10333,10 @@
     },
     {
         "name": "admin/ldap/rbcd",
+        "type": "auxiliary"
+    },
+    {
+        "name": "admin/ldap/shadow_credentials",
         "type": "auxiliary"
     },
     {
@@ -10309,6 +10553,10 @@
     },
     {
         "name": "admin/postgres/postgres_sql",
+        "type": "auxiliary"
+    },
+    {
+        "name": "admin/registry_security_descriptor",
         "type": "auxiliary"
     },
     {
@@ -11236,6 +11484,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "gather/checkpoint_gateway_fileread_cve_2024_24919",
+        "type": "auxiliary"
+    },
+    {
         "name": "gather/checkpoint_hostname",
         "type": "auxiliary"
     },
@@ -11264,6 +11516,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "gather/coldfusion_pms_servlet_file_read",
+        "type": "auxiliary"
+    },
+    {
         "name": "gather/coldfusion_pwd_props",
         "type": "auxiliary"
     },
@@ -11273,6 +11529,10 @@
     },
     {
         "name": "gather/corpwatch_lookup_name",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/crushftp_fileread_cve_2024_4040",
         "type": "auxiliary"
     },
     {
@@ -11412,7 +11672,19 @@
         "type": "auxiliary"
     },
     {
+        "name": "gather/jasmin_ransomware_dir_traversal",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/jasmin_ransomware_sqli",
+        "type": "auxiliary"
+    },
+    {
         "name": "gather/java_rmi_registry",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/jenkins_cli_ampersand_arbitrary_file_read",
         "type": "auxiliary"
     },
     {
@@ -11460,6 +11732,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "gather/magento_xxe_cve_2024_34102",
+        "type": "auxiliary"
+    },
+    {
         "name": "gather/manageengine_adaudit_plus_xnode_enum",
         "type": "auxiliary"
     },
@@ -11493,6 +11769,10 @@
     },
     {
         "name": "gather/mongodb_js_inject_collection_enum",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/mongodb_ops_manager_diagnostic_archive_info",
         "type": "auxiliary"
     },
     {
@@ -11556,6 +11836,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "gather/progress_moveit_sftp_fileread_cve_2024_5806",
+        "type": "auxiliary"
+    },
+    {
         "name": "gather/prometheus_api_gather",
         "type": "auxiliary"
     },
@@ -11581,6 +11865,14 @@
     },
     {
         "name": "gather/rails_doubletap_file_read",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/rancher_authenticated_api_cred_exposure",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/ray_lfi_cve_2023_6020",
         "type": "auxiliary"
     },
     {
@@ -11629,6 +11921,10 @@
     },
     {
         "name": "gather/solarwinds_orion_sqli",
+        "type": "auxiliary"
+    },
+    {
+        "name": "gather/solarwinds_servu_fileread_cve_2024_28995",
         "type": "auxiliary"
     },
     {
@@ -11789,6 +12085,10 @@
     },
     {
         "name": "scanner/dcerpc/management",
+        "type": "auxiliary"
+    },
+    {
+        "name": "scanner/dcerpc/nrpc_enumusers",
         "type": "auxiliary"
     },
     {
@@ -12324,6 +12624,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "scanner/http/gitlab_version",
+        "type": "auxiliary"
+    },
+    {
         "name": "scanner/http/glassfish_login",
         "type": "auxiliary"
     },
@@ -12848,6 +13152,10 @@
         "type": "auxiliary"
     },
     {
+        "name": "scanner/http/telerik_report_server_auth_bypass",
+        "type": "auxiliary"
+    },
+    {
         "name": "scanner/http/thinvnc_traversal",
         "type": "auxiliary"
     },
@@ -12905,6 +13213,10 @@
     },
     {
         "name": "scanner/http/vicidial_multiple_sqli",
+        "type": "auxiliary"
+    },
+    {
+        "name": "scanner/http/vicidial_sql_enum_users_pass",
         "type": "auxiliary"
     },
     {
@@ -13008,7 +13320,15 @@
         "type": "auxiliary"
     },
     {
+        "name": "scanner/http/wp_fastest_cache_sqli",
+        "type": "auxiliary"
+    },
+    {
         "name": "scanner/http/wp_gimedia_library_file_read",
+        "type": "auxiliary"
+    },
+    {
+        "name": "scanner/http/wp_learnpress_c_fields_sqli",
         "type": "auxiliary"
     },
     {
@@ -13057,6 +13377,10 @@
     },
     {
         "name": "scanner/http/wp_total_upkeep_downloader",
+        "type": "auxiliary"
+    },
+    {
+        "name": "scanner/http/wp_ultimate_member_sorting_sqli",
         "type": "auxiliary"
     },
     {
@@ -13169,6 +13493,10 @@
     },
     {
         "name": "scanner/misc/clamav_control",
+        "type": "auxiliary"
+    },
+    {
+        "name": "scanner/misc/cups_browsed_info_disclosure",
         "type": "auxiliary"
     },
     {
@@ -13293,6 +13621,10 @@
     },
     {
         "name": "scanner/mssql/mssql_schemadump",
+        "type": "auxiliary"
+    },
+    {
+        "name": "scanner/mssql/mssql_version",
         "type": "auxiliary"
     },
     {

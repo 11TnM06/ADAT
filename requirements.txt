@@ -47,10 +47,12 @@ sync==1.0.0
 tqdm==4.65.0
 Twisted==22.10.0
 txaio==23.1.1
-typing_extensions==4.5.0
+typing_extensions==4.12.2
 urllib3==1.26.15
 websockets==10.4
 xmltodict==0.13.0
 zope.interface==6.0
 django-bootstrap-v5==1.0.11
+pandas==2.2.3
+networkx==3.4.2
 -e ../python-gvm

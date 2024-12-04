@@ -88,19 +88,21 @@ class Auto_View(View):
             gvm_vulnerabilities, metasploit_modules, bm25_corpus
         )
 
-        print(f"Vulnerability: {mapping_results[0]['vulnerability']}")
+        print(f"Vulnerability: {mapping_results[    0]['vulnerability']}")
         print(f"Matched Module: {mapping_results[0]['matched_module']}")
         print(f"Matched RPORT: {mapping_results[0]['rport']}")
         print(f"Score: {mapping_results[0]['score']:.2f}\n")
-
+        formatted_exploits = [
+            {"name": f"{mapping_results[0]['vulnerability']} : {mapping_results[0]['matched_module']}", "module": {mapping_results[0]['matched_module']}}
+        ]
         # extract targetURI
         targetURI = modules_detection.extract_target_uri(et.find('description').text, et.find('host').text)
         print(targetURI)
         #exploits.insert(0, "")
-        print("exploits: ", exploits)
-        print("targetURI: ", targetURI)
+        #print("exploits: ", exploits)
+        #print("targetURI: ", targetURI)
         return render(request, "core/auto.html",
-                      {"username": username, "exploits": exploits, 'host': host, 'name': name, "port": port,
+                      {"username": username, "exploits": formatted_exploits, 'host': host, 'name': name, "port": port,
                        "targetURI": targetURI})
 
 def analyze_with_tfidf(text, top_n=5):
