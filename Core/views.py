@@ -20,7 +20,8 @@ import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from .modules_detection.modules_detection import ModulesDetection
-from .modules_detection.metasploit_bm25 import MetasploitBM25
+from .modules_detection.metasploit_bm25 import MetasploitBM25, DataHandler, EnhancedBM25Search
+
 msf_user = 'msf'
 msf_pass = 'msf'
 msf_host = '127.0.0.1'
@@ -64,10 +65,10 @@ class Auto_View(View):
 
         # get vulnerability details
         vuln_details = modules_detection.get_vulnerability_details(id1)
-        name, description, port, cve, host, et = vuln_details.values()
+        name, description, port, cve_refs, host, et = vuln_details.values()
 
         # search cve
-        search_cve = modules_detection.extract_cve_ids(cve)
+        search_cve = modules_detection.extract_cve_ids(cve_refs)
 
         top_cve_modules = modules_detection.search_cves(search_cve)
         cve_result = modules_detection.format_module_data(top_cve_modules)[:5]
@@ -78,22 +79,40 @@ class Auto_View(View):
         # search exploit modules by base method
         exploits = modules_detection.base_search_exploits(name, description)
 
+        data_handler = DataHandler("/home/kali/Documents/UET/ADAT/Core/modules_detection/modules.json",
+                                     "/home/kali/Documents/UET/ADAT/Core/modules_detection/modules_attrib.json",
+                                     client)
+        metasploit_modules = data_handler.load_module_attrib()
+        bm25_corpus = data_handler.prepare_bm25_data(metasploit_modules)
+        text = name + port
+        if cve_refs is not None:
+            for ref in cve_refs:
+                if 'type' in ref.attrib and ref.attrib['type'] == 'cve':
+                    text += ref.attrib['id'] + " "
+        if description is not None:
+            gvm_vulnerabilities = [
+                f"{text}",
+                f"{port}",
+                description,
+            ]
+        else:
+            gvm_vulnerabilities = [
+                f"{text}",
+                f"{port}",
+            ]
+        processed_vulnerabilities = data_handler.process_gvm_vulnerabilities(gvm_vulnerabilities)
+        # Map vulnerabilities to modules
         # search exploit modules by BM25 method
-        metasploitBM25 = MetasploitBM25(client)
-        metasploit_modules = metasploitBM25.get_metasploit_modules()
-        gvm_vulnerabilities = [name]
-        bm25_corpus = metasploitBM25.prepare_bm25_data(metasploit_modules)
-        processed_vulnerabilities = metasploitBM25.process_gvm_vulnerabilities(gvm_vulnerabilities)
-        mapping_results = metasploitBM25.map_vulnerabilities_to_modules(
-            gvm_vulnerabilities, metasploit_modules, bm25_corpus
-        )
+        # metasploit = MetasploitBM25(processed_vulnerabilities, metasploit_modules, bm25_corpus)
+        metasploit = EnhancedBM25Search(min_score=13.1)
+        mapping_results = metasploit.map_vulnerabilities_to_modules(processed_vulnerabilities, metasploit_modules, bm25_corpus)
+        # search exploit modules by enhanced BM25 method
 
-        print(f"Vulnerability: {mapping_results[    0]['vulnerability']}")
+        print(f"Vulnerability: {mapping_results[0]['vulnerability']}")
         print(f"Matched Module: {mapping_results[0]['matched_module']}")
-        print(f"Matched RPORT: {mapping_results[0]['rport']}")
         print(f"Score: {mapping_results[0]['score']:.2f}\n")
         formatted_exploits = [
-            {"name": f"{mapping_results[0]['vulnerability']} : {mapping_results[0]['matched_module']}", "module": {mapping_results[0]['matched_module']}}
+            {"name": f"{name} : {mapping_results[0]['matched_module']}", "module": {mapping_results[0]['matched_module']}}
         ]
         # extract targetURI
         targetURI = modules_detection.extract_target_uri(et.find('description').text, et.find('host').text)

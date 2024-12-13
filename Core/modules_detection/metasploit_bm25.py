@@ -3,18 +3,90 @@ from pymetasploit3.msfrpc import MsfRpcClient
 from nltk.tokenize import word_tokenize
 from tqdm import tqdm
 import json
+import numpy as np
+from nltk.corpus import stopwords
+stop_words = set(stopwords.words('english'))
 
-
-class MetasploitBM25:
-    def __init__(self, client):
+class DataHandler:
+    def __init__(self, modules_file, modules_attrib_file, client):
         self.client = client
-        self.modules_file = '/home/kali/Documents/UET/ADAT/Core/modules_detection//modules.json'
-        self.modules_attrib_file = '/home/kali/Documents/UET/ADAT/Core/modules_detection/modules_attrib.json'
+        self.modules_file = modules_file
+        self.modules_attrib_file = modules_attrib_file
+
+    def save_modules(self, modules):
+        """Save modules to a JSON file."""
+        with open(self.modules_file, 'w') as file:
+            json.dump(modules, file, indent=4)
+        print(f"Modules saved to {self.modules_file}")
+
+    def load_modules(self):
+        """Load modules from a JSON file."""
+        with open(self.modules_file, 'r') as file:
+            return json.load(file)
+
+    def save_module_attrib(self, module_info):
+        """Save enriched module attributes to a JSON file."""
+        with open(self.modules_attrib_file, 'w') as file:
+            json.dump(module_info, file, indent=4)
+        print(f"Module attributes saved to {self.modules_attrib_file}")
+
+    def load_module_attrib(self):
+        """Load enriched module attributes from a JSON file."""
+        with open(self.modules_attrib_file, 'r') as file:
+            return json.load(file)
+
     @staticmethod
-    def print_meta():
-        print("xinchao")
+    def load_json_file(filename):
+        with open(filename, 'r') as file:
+            return json.load(file)
+
+    @staticmethod
+    def prepare_bm25_data(modules):
+        """Prepare corpus for BM25."""
+        corpus = []
+        for module in modules:
+            # add cve if exist in references
+            cve = []
+            if module['references']:
+                for ref in module['references']:
+                    if "CVE" == ref[0]:
+                        cve.append(ref[0] + "-" + ref[1])
+                        # print(ref[0] + "-" + ref[1])
+            text = f"{module['name']} {module['description']} {' '.join(cve)}"
+            tokens = word_tokenize(text.lower())
+            corpus.append(tokens)
+        return corpus
+
+    @staticmethod
+    def prepare_tfidf_corpus(modules):
+        corpus = []
+        for module in modules:
+            # add cve if exist in references
+            cve = []
+            if module['references']:
+                for ref in module['references']:
+                    if "CVE" == ref[0]:
+                        cve.append(ref[0] + "-" + ref[1])
+                        # print(ref[0] + "-" + ref[1])
+            text = f"{module['name']} {module['description']} {' '.join(cve)}"
+            corpus.append(text.lower())
+        return corpus
+
+    @staticmethod
+    def process_gvm_vulnerabilities(vulnerabilities):
+        """Tokenize vulnerabilities for BM25 processing."""
+        words = []
+        for vuln in vulnerabilities:
+            token = word_tokenize(vuln.lower())
+            tmp = []
+            for word in token:
+                if word not in stop_words:
+                    tmp.append(word)
+            words.append(tmp)
+        return words
+
     def get_all_modules(self):
-        """Fetch all modules and save them with their type."""
+        """Fetch all modules (exploit and auxiliary) and save them."""
         exploits = self.client.modules.exploits
         auxiliaries = self.client.modules.auxiliary
 
@@ -25,25 +97,29 @@ class MetasploitBM25:
         for auxiliary in tqdm(auxiliaries, desc="Fetching Auxiliary Modules"):
             all_modules.append({"name": auxiliary, "type": "auxiliary"})
 
-        with open(self.modules_file, 'w') as file:
-            json.dump(all_modules, file, indent=4)
-
-        print(f"Total modules saved: {len(all_modules)}")
+        self.save_modules(all_modules)
 
     def create_module_attrib(self):
-        """Load modules from the file and enrich them with metadata."""
-        with open(self.modules_file, 'r') as file:
-            data = json.load(file)
-
+        """Load modules and enrich them with attributes."""
+        modules = self.load_modules()
         module_info = []
-        for module in tqdm(data, desc="Adding Module Attributes"):
+        i = 0
+        for module in tqdm(modules, desc="Adding Module Attributes"):
+            if i == 10:
+                break
             try:
                 if module['type'] == 'exploit':
                     info = self.client.modules.use('exploit', module['name'])
                 else:
                     info = self.client.modules.use('auxiliary', module['name'])
-
-                rport = str(info.options.get('RPORT', ''))
+                rport = ""
+                if isinstance(info.options, dict):
+                    rport = str(info.options.get('RPORT', ''))
+                elif isinstance(info.options, list):
+                    for option in info.options:
+                        if isinstance(option, dict) and 'RPORT' in option:
+                            rport = str(option['RPORT'])
+                            break
                 module_info.append({
                     "fullname": info.fullname,
                     "name": info.name,
@@ -52,48 +128,114 @@ class MetasploitBM25:
                     "references": info.references,
                 })
             except Exception as e:
+                i += 1
                 print(f"Error processing module {module['name']}: {e}")
                 continue
+        self.save_module_attrib(module_info)
 
-        with open(self.modules_attrib_file, 'w') as file:
-            json.dump(module_info, file, indent=4)
+class EnhancedBM25Search:
+    def __init__(self, min_score=11.0, cve_weight=5):
+        self.min_score = min_score
+        self.cve_weight = cve_weight
 
-    def get_metasploit_modules(self):
-        """Load enriched modules from the file."""
-        with open(self.modules_attrib_file, 'r') as file:
-            return json.load(file)
+    def map_vulnerabilities_to_modules(self, queries, modules, corpus):
+        """
+        Perform BM25 search for each query against the corpus.
+        :param corpus: Tokenized module descriptions.
+        :param queries: List of queries (e.g., GVM vulnerabilities).
+        :param modules: List of module metadata.
+        :return: List of results with matched modules and scores.
+        """
+        bm25 = BM25Okapi(corpus)
+        results = []
 
-    @staticmethod
-    def prepare_bm25_data(modules):
-        """Prepare the corpus for BM25."""
-        corpus = []
-        for module in tqdm(modules, desc="Preparing BM25 Corpus"):
-            text = f"{module['name']} {module['description']}"
-            corpus.append(word_tokenize(text.lower()))
-        return corpus
+        for vuln in queries:
+            scores = bm25.get_scores(vuln)
 
-    @staticmethod
-    def process_gvm_vulnerabilities(vulnerabilities):
-        """Tokenize vulnerabilities for BM25 processing."""
-        return [word_tokenize(vuln.lower()) for vuln in vulnerabilities]
+            # Check the best match or fallback to "No module found"
+            max_score = np.max(scores)
+            if max_score > self.min_score:
+                best_match_index = np.argmax(scores)
+                best_module = modules[best_match_index]
+                results.append({
+                    "vulnerability": vuln,
+                    "matched_module": best_module.get("fullname", "Unknown"),
+                    "score": max_score,
+                })
+            else:
+                results.append({
+                    "vulnerability": vuln,
+                    "matched_module": "No module found",
+                    "score": max_score,
+                })
 
-    @staticmethod
-    def map_vulnerabilities_to_modules(vulnerabilities, modules, bm25_corpus):
-        """Map vulnerabilities to the most relevant modules."""
+        return results
+
+    def map_vulnerabilities_to_modules_1(self, queries, modules, corpus, top_k=3):
+        """
+        Perform BM25 search for each query against the corpus.
+        :param corpus: Tokenized module descriptions.
+        :param queries: List of queries (e.g., GVM vulnerabilities).
+        :param modules: List of module metadata.
+        :return: List of results with matched modules and scores.
+        """
+        bm25 = BM25Okapi(corpus)
+        results = []
+
+        for vuln in queries:
+            scores = bm25.get_scores(vuln)
+
+            # Check the best match or fallback to "No module found"
+            top_indices = np.argsort(scores)[-top_k:][::-1]
+            top_results = []
+
+            for index in top_indices:
+                if scores[index] > self.min_score:
+                    matched_module = modules[index]
+                    top_results.append({
+                        "query": vuln,
+                        "matched_module": matched_module.get("fullname", "Unknown"),
+                        "score": scores[index],
+                    })
+                else:
+                    top_results.append({
+                        "query": vuln,
+                        "matched_module": "No module found",
+                        "score": scores[index],
+                    })
+
+            results.append({
+                "query": vuln,
+                "top_results": top_results
+            })
+
+        return results
+
+class MetasploitBM25:
+    def __init__(self, vulnerabilities, modules, bm25_corpus):
+        self.vulnerabilities = vulnerabilities
+        self.modules = modules
+        self.bm25_corpus = bm25_corpus
+
+    def map_vulnerabilities_to_modules(self):
+        """Map vulnerabilities to Metasploit modules using BM25."""
+        vulnerabilities = self.vulnerabilities
+        modules = self.modules
+        bm25_corpus = self.bm25_corpus
         bm25 = BM25Okapi(bm25_corpus)
         results = []
+
         for vuln in vulnerabilities:
-            scores = bm25.get_scores(word_tokenize(vuln.lower()))
+            scores = bm25.get_scores(vuln)
             best_match_index = scores.argmax()
             best_module = modules[best_match_index]
             results.append({
                 "vulnerability": vuln,
                 "matched_module": best_module["fullname"],
-                "rport": best_module["rport"],
                 "score": scores[best_match_index],
             })
-        return results
 
+        return results
 
 if __name__ == "__main__":
     # nltk.download('punkt')
