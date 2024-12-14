@@ -123,11 +123,3 @@ class Auto_View(View):
         return render(request, "core/auto.html",
                       {"username": username, "exploits": formatted_exploits, 'host': host, 'name': name, "port": port,
                        "targetURI": targetURI})
-
-def analyze_with_tfidf(text, top_n=5):
-    stop_words = set(stopwords.words('english'))
-    tfidf = TfidfVectorizer(max_features=top_n, stop_words=stop_words)
-    tfidf_matrix = tfidf.fit_transform([text])
-    keywords = tfidf.get_feature_names_out()
-    print("AI Keywords: ", keywords)
-    return keywords
